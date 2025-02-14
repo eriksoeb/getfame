@@ -1,0 +1,11 @@
+{ "error":{ 
+ "getfameerror":"Invalid number of arguments" ,
+ "code":"400" ,
+ "readme":"/ssb/bruker/refertid/system/myfame/api/readme.txt" ,
+ "example": [{ 
+ "example1":"getfameseries /ssb/bruker/refertid/data/kpi_publ.db 'total.ipr'" , 
+ "example2":"getfameseries /ssb/bruker/refertid/data/kpi_publ.db 'total.ipr' 'freq m; date jan2018 to *'" , 
+ "example3":"getfameseries /ssb/bruker/refertid/data/kpi_publ.db '?ota?'" , 
+ "example3":"getfameseries $REFERTID/data/kpi_publ.db '?ota?i.IPR' 'convert on;freq A; date 2022 to *" , 
+ "example7":"getfameseries $HOME/erik.db 'STA?'"  
+ }]  }} 
