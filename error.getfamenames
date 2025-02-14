@@ -1,0 +1,11 @@
+{ "error":{ 
+ "getfameerror":"Invalid number of arguments" ,
+ "code":"400" ,
+ "readme":"/ssb/bruker/refertid/system/myfame/api/readme.txt" ,
+ "example": [{ 
+ "example1":"getfamenames /ssb/bruker/refertid/data/kpi_publ.db 'total?'" , 
+ "example2":"getfamenames /ssb/bruker/refertid/data/fornavn.db '?ERIK?'" , 
+ "example3":"getfamenames /ssb/bruker/refertid/data/fornavn.db 'JI?'" , 
+ "example4":"getfamenames /ssb/bruker/refertid/data/fornavn.db '?JAN?'" , 
+ "example5":"getfamenames /ssb/bruker/rsb/erik.db 'STA?'"  
+ }]  }} 
