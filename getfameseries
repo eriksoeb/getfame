@@ -1,0 +1,185 @@
+
+#!/bin/bash
+
+#Erik Soeberg creates json file with univarsal epoch date for comparisons
+#June/July 2024
+
+
+
+#name of this script getfameexpr or getfameseries
+MNAME=$(basename "$0")
+GETFAMESYS="$(dirname "$(readlink -f "$0")")"
+
+export GETFAMESYS;
+
+
+
+#lagrer resultatfil, samme som vises i skjerm terminal output:
+if test ! -d $HOME/.GetFAME; then
+mkdir $HOME/.GetFAME
+fi
+
+#resultfile
+if [ -s $HOME/.GetFAME/$MNAME.json ]
+then
+  rm $HOME/.GetFAME/$MNAME.json
+  touch $HOME/.GetFAME/$MNAME.json
+fi
+
+
+if [ -s $HOME/.GetFAME/fame.error ]
+then
+  rm $HOME/.GetFAME/fame.error
+fi
+
+
+if [ -s $HOME/.GetFAME/getfame.error ]
+then
+  rm $HOME/.GetFAME/getfame.error
+fi
+
+if [ -s $HOME/.GetFAME/fame.inp ]
+then
+  rm $HOME/.GetFAME/fame.inp
+fi
+
+
+
+ERROR_FILE=$HOME/.GetFAME/getfame.error
+> $ERROR_FILE
+
+> $HOME/.GetFAME/getfame.error
+> $HOME/.GetFAME/fame.error
+
+
+MYDATE=$(date +'%Y-%m-%dT%H:%M:%S')
+
+if [ $# -eq 0 ]; then
+#echo " needs arguments, show readme"
+cat $GETFAMESYS/readme.txt 
+echo "This is the readme.txt  $GETFAMESYS/readme.txt "
+echo "The APIs needs arguments - scroll to read or combine with more $GETFAMESYS/readme.txt"
+exit 1
+fi
+
+
+
+
+if [ $MNAME == "getfamenames" ] && [ $# -ne 2 ]; then
+#echo " getfamenames must have exactly 2 argumenst $MNAME $#"
+cp $GETFAMESYS/error.$MNAME $ERROR_FILE  
+cat $ERROR_FILE
+exit 1
+fi
+
+
+
+
+if [ $# -lt 2 ] || [ $# -gt 3 ];  then
+
+
+#echo "{ \"error\":{ " >> $ERROR_FILE
+#echo " \"getfameerror\":\"Invalid number of arguments\" ," >> $ERROR_FILE 
+#echo " \"code\":\"400\" ," >> $ERROR_FILE 
+#echo " \"date\":\"$MYDATE\" ," >> $ERROR_FILE 
+#echo " \"readme\":\"$REFERTID/system/myfame/api/readme.txt\" ," >> $ERROR_FILE 
+#echo " \"example\": [{ " >> $ERROR_FILE
+#echo " \"example1\":\"getfameseries $REFERTID/data/kpi_publ.db 'total.ipr'\" , " >> $ERROR_FILE
+#echo " \"example2\":\"getfameseries $REFERTID/data/kpi_publ.db 'total.ipr' 'freq m; date jan2018 to *'\" , " >> $ERROR_FILE
+#echo " \"example3\":\"getfameseries $REFERTID/data/kpi_publ.db 'convert(total.ipr,annual, constant)'\" , " >> $ERROR_FILE
+#echo " \"example4\":\"getfameseries $REFERTID/data/kpi_publ.db 'convert(K01.ipr,quarterly, constant)'\" , " >> $ERROR_FILE
+#echo " \"example5\":\"getfameseries $REFERTID/data/kpi_publ.db 'LAVE(K01.IPR,K02.IPR,K03.IPR)'\" , " >> $ERROR_FILE
+#echo " \"example6\":\"getfameseries $REFERTID/data/kpi_publ.db 'LAVE(K01.IPR,K02.IPR,K03.IPR)' 'freq m; date feb90 to aug90'\" , " >> $ERROR_FILE
+#echo " \"example7\":\"getfameseries $HOME/erik.db 'pct(STATS)'\"  " >> $ERROR_FILE
+#echo " }]  }} " >> $ERROR_FILE
+
+
+cp $GETFAMESYS/error.$MNAME $ERROR_FILE  
+cat $ERROR_FILE
+exit 1
+
+fi
+
+ 
+
+MYDISPLAY=$DISPLAY;export MYDISPLAY
+
+
+
+#setter FAME_PATH til katalogen der fame.inp som starter applikasjonen ligger.
+FAME_PATH=$GETFAMESYS; export FAME_PATH
+FAME_PATH=$HOME/.GetFAME; export FAME_PATH
+
+
+DUMMY=""
+
+#length if string TBC
+#
+str=$2
+strlen=${#str}
+
+#echo $strlen
+
+if [ $strlen -ge 64000 ]; then
+echo 'Sorry, wildlist length :' $(($strlen+0)) 'can NOT be longer then maximum max is 64 000 characters'
+echo 'Reduce the length of the wildlist string and try again!'
+exit 1
+fi
+
+
+
+
+cp -f  $GETFAMESYS/api.inp $HOME/.GetFAME/fame.inp
+
+echo "--legger til params  here:"  >> $HOME/.GetFAME/fame.inp
+echo "-- debugger  $MNAME $GETFAMESYS  $#  $HOME  " >> $HOME/.GetFAME/fame.inp
+
+
+if  [ $# -eq 2 ]; then
+#echo 'try; $getfameseries ' "\""$1"\"" ', ' "\""$2"\"" ',' "\""$DUMMY"\""  >> $HOME/.GetFAME/fame.inp
+echo 'try; $'$MNAME '  ' "\""$1"\"" ', ' "\""$2"\"" ',' "\""$DUMMY"\""  >> $HOME/.GetFAME/fame.inp
+
+else
+#echo 'try; $getfameseries ' "\""$1"\"" ', ' "\""$2"\"" ', '"\""$3"\""  >> $HOME/.GetFAME/fame.inp
+echo 'try; $'$MNAME '  ' "\""$1"\"" ', ' "\""$2"\"" ', '"\""$3"\""  >> $HOME/.GetFAME/fame.inp
+fi
+
+echo '; otherwise; $writeerror lasterror, lasterror; end try; ' >> $HOME/.GetFAME/fame.inp
+
+
+#XENVIRONMENT=$MYFAMESYS/mfx; export XENVIRONMENT
+
+#setter FAME_TEMP for lagring av fames 2 work filer 
+FAME_TEMP=/tmp;       export FAME_TEMP
+
+#setter XNLSPATH for klipping i neste versjon av fame
+XNLSPATH=$FAME/X11R6/nls;               export XNLSPATH
+
+#echo Starting the api
+
+#unset LC_CTYPE
+
+
+#old
+#works surpress fame software output
+
+#$FAME/fame i $HOME/.GetFAME/fame.inp  >>/dev/null  
+
+#better when fame licenece expires:
+$FAME/fame i $HOME/.GetFAME/fame.inp  &>/dev/null  
+
+#below works all output  and fame output:
+#$FAME/fame i $HOME/.GetFAME/fame.inp
+
+#iconv -t UTF-8 -f UTF-8 -c $HOME/.GetFAME/$MNAME.isojson -o $HOME/.GetFAME/$MNAME.json  
+cp -f $HOME/.GetFAME/$MNAME.isojson  $HOME/.GetFAME/$MNAME.json  
+
+cat $HOME/.GetFAME/getfame.error $HOME/.GetFAME/fame.error $HOME/.GetFAME/$MNAME.json
+
+#cleanup
+rm -f $HOME/.GetFAME/$MNAME.isojson 
+rm -f  $HOME/.GetFAME/fame.inp
+
+#end of script
+
+
