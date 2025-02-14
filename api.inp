@@ -1,0 +1,21 @@
+
+
+
+--coomon inp file for getfame json
+
+devi term  standard
+devi gra none
+
+disconnect all
+channel warnings none
+
+try
+load "$GETFAMESYS/getfame.pc"
+load "$GETFAMESYS/functions.pc"
+
+otherwise
+
+end try
+
+--$getfame call:
+
