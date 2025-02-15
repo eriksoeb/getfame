@@ -7,7 +7,7 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 
 ## install /test
 #### No need to install. Log on to the prodsone linux xterm or jubiterlab, and run and execute 
-#### (need access to $REFERTID/system/myfame/api where applications api is located, all should have this access by default. ) 
+#### (need access to $REFERTID/system/myfame/api where application / api is located, all should have this (rx) access by default. ) 
 #### copy all files to this folder first time.
 #### getfameseries getfameexpr getfamenames need to be in PATH or you need to prefix with the path when executing--
 #### Test to execute ie getfameexpr from a xterm before jupiterlab to get better / proper errormessage
