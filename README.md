@@ -23,9 +23,9 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 ### 1. getfamenames :  wildcard/objectname search for famenames -> gets metadata info ( no date param)
 
 ```
-xterm :     sl-fame-1:~> getfamenames $REFERTID/data/fornavn.db  "ERIK"
-xterm :     sl-fame-1:~> getfamenames $REFERTID/data/fornavn.db  "?ERIK?,JIM,JAN?"
-xterm :     sl-fame-1:~> getfamenames $REFERTID/data/fornavn.db  "?RIK,KRISTIN,JIM,HE?"
+xterm :       sl-fame-1:~> getfamenames $REFERTID/data/fornavn.db  "ERIK"
+xterm :       sl-fame-1:~> getfamenames $REFERTID/data/fornavn.db  "?ERIK?,JIM,JAN?"
+xterm :       sl-fame-1:~> getfamenames $REFERTID/data/fornavn.db  "?RIK,KRISTIN,JIM,HE?"
 jupiterlab :  !ssh sl-fame-1.ssb.no 'getfamenames $REFERTID/data/fornavn.db "?ERIK" '
 ```
 => sample getfamenames json result:
@@ -48,12 +48,12 @@ jupiterlab :  !ssh sl-fame-1.ssb.no 'getfamenames $REFERTID/data/fornavn.db "?ER
 
 ### 2. getfameseries  -> gets observations for >=1 series/wildcards. No functions.  Convert will use observed settings from FAME definition
 ```
-xterm: sl-fame-1:~> getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" 
-xterm: sl-fame-1:~> getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "date 2024"
-xterm: sl-fame-1:~> getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "freq m; date thisday(m)-5 to *""
-xterm: sl-fame-1:~> getfameseries  $REFERTID/data/fornavn.db  "?ERIK,KRISTIN,JIM?}" "date 2010 to 2012"
-xterm: sl-fame-1:~> getfameseries /ssb/bruker/refertid/data/fornavn.db "?JAN?" "date 2000 to 2005"
-xterm: sl-fame-1:~> getfameseries /ssb/bruker/refertid/data/fornavn.db "JI?" "date 2000 to *; deci 2"
+xterm:       sl-fame-1:~> getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" 
+xterm:       sl-fame-1:~> getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "date 2024"
+xterm:       sl-fame-1:~> getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "freq m; date thisday(m)-5 to *""
+xterm:       sl-fame-1:~> getfameseries  $REFERTID/data/fornavn.db  "?ERIK,KRISTIN,JIM?}" "date 2010 to 2012"
+xterm:       sl-fame-1:~> getfameseries /ssb/bruker/refertid/data/fornavn.db "?JAN?" "date 2000 to 2005"
+xterm:       sl-fame-1:~> getfameseries /ssb/bruker/refertid/data/fornavn.db "JI?" "date 2000 to *; deci 2"
 jupiterlab:  !ssh sl-fame-1.ssb.no 'getfameseries $REFERTID/data/fornavn.db "ERIK?" "date 2000 to *" '
 ```
 => sample getfameseries json result:
@@ -107,15 +107,15 @@ jupiterlab:  !ssh sl-fame-1.ssb.no 'getfameseries $REFERTID/data/fornavn.db "ERI
 
 ### 3. getfameexpr:  ->gets observations, series-expression as a result, based on a fame expression. recommended. Full flexibility for converting.
 ```
-sl-fame-1:~> getfameexpr $REFERTID/data/fornavn.db  "ERIK"
-sl-fame-1:~> getfameexpr $REFERTID/data/fornavn.db  "mave(ERIK,2)" "date 2000 to 2010"
-sl-fame-1:~> getfameexpr $REFERTID/data/fornavn.db  "Lsum(ERIK,EIRIK)" "date 2000 to *"
-sl-fame-1:~> getfameexpr $REFERTID/data/kpi_publ.db "convert(total.ipr,annual,constant)" "date 2020 to *"
---us eof custom common basis to set base-year to 2010 (instead of current 2015)
-sl-fame-1:  getfameexpr /ssb/bruker/refertid/data/kpi_publ.db "cb(total.ipr,2010)"   "date 2010 to 2020"   
-sl-fame-1:~> getfameexpr $REFERTID/data/kpi_publ.db "total.ipr" "freq m; date jan20 to feb20;deci 0"
-sl-fame-1:~> getfameexpr $REFERTID/data/fornavn.db  "ERIK+EIRIK" "date 2000 to 2010;deci 1"
-jupiterlab :  !ssh sl-fame-1.ssb.no 'getfameexpr $REFERTID/data/fornavn.db "pct(ERIK)" "date 2000 to *" '
+sl-fame-1:~>     getfameexpr $REFERTID/data/fornavn.db  "ERIK"
+sl-fame-1:~>     getfameexpr $REFERTID/data/fornavn.db  "mave(ERIK,2)" "date 2000 to 2010"
+sl-fame-1:~>     getfameexpr $REFERTID/data/fornavn.db  "Lsum(ERIK,EIRIK)" "date 2000 to *"
+sl-fame-1:~>     getfameexpr $REFERTID/data/kpi_publ.db "convert(total.ipr,annual,constant)" "date 2020 to *"
+--us eof custom common basis to set base-year to 2010 (instead of current 2015:)
+sl-fame-1:      getfameexpr /ssb/bruker/refertid/data/kpi_publ.db "cb(total.ipr,2010)"   "date 2010 to 2020"   
+sl-fame-1:~>    getfameexpr $REFERTID/data/kpi_publ.db "total.ipr" "freq m; date jan20 to feb20;deci 0"
+sl-fame-1:~>    getfameexpr $REFERTID/data/fornavn.db  "ERIK+EIRIK" "date 2000 to 2010;deci 1"
+jupiterlab :    !ssh sl-fame-1.ssb.no 'getfameexpr $REFERTID/data/fornavn.db "pct(ERIK)" "date 2000 to *" '
 ```
 => sample getfameexpr json result:
  ```
