@@ -1,12 +1,13 @@
 
 #!/bin/bash
 
-#Erik Soeberg creates json file with univarsal epoch date for comparisons
-#June/July 2024
+#Erik Soeberg creates json file with universal epoch date for comparisons and charting in tools like highchart javascript
+#June/July 2024/2025
 
 
 
-#name of this script getfameexpr or getfameseries
+#name of this script getfameexpr or getfameseries or getfamenames --do not rename as procedures in fame has same name
+#outputfiles will get same names.
 MNAME=$(basename "$0")
 GETFAMESYS="$(dirname "$(readlink -f "$0")")"
 
