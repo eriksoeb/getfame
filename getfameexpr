@@ -11,9 +11,9 @@ MNAME=$(basename "$0")
 GETFAMESYS="$(dirname "$(readlink -f "$0")")"
 
 export GETFAMESYS;
+
+
 export GETFAMELOG="$REFERTID/system/myfame/getlog.txt"
-
-
 
 #lagrer resultatfil, samme som vises i skjerm terminal output:
 if test ! -d $HOME/.GetFAME; then
@@ -115,12 +115,10 @@ FAME_PATH=$HOME/.GetFAME; export FAME_PATH
 DUMMY=""
 
 #length if string TBC
-#
 str=$2
 strlen=${#str}
 
-#echo $strlen
-
+#A user listed all his series in the database as an argument... what about wildcarding??
 if [ $strlen -ge 64000 ]; then
 echo 'Sorry, wildlist length :' $(($strlen+0)) 'can NOT be longer then maximum max is 64 000 characters'
 echo 'Reduce the length of the wildlist string and try again!'
@@ -132,23 +130,19 @@ fi
 
 cp -f  $GETFAMESYS/api.inp $HOME/.GetFAME/fame.inp
 
-echo "--legger til params  here:"  >> $HOME/.GetFAME/fame.inp
 echo "-- debugger  $MNAME $GETFAMESYS  $#  $HOME  " >> $HOME/.GetFAME/fame.inp
 
 
 if  [ $# -eq 2 ]; then
-#echo 'try; $getfameseries ' "\""$1"\"" ', ' "\""$2"\"" ',' "\""$DUMMY"\""  >> $HOME/.GetFAME/fame.inp
 echo 'try; $'$MNAME '  ' "\""$1"\"" ', ' "\""$2"\"" ',' "\""$DUMMY"\""  >> $HOME/.GetFAME/fame.inp
 
 else
-#echo 'try; $getfameseries ' "\""$1"\"" ', ' "\""$2"\"" ', '"\""$3"\""  >> $HOME/.GetFAME/fame.inp
 echo 'try; $'$MNAME '  ' "\""$1"\"" ', ' "\""$2"\"" ', '"\""$3"\""  >> $HOME/.GetFAME/fame.inp
 fi
 
 echo '; otherwise; $writeerror lasterror, lasterror; end try; ' >> $HOME/.GetFAME/fame.inp
 
 
-#XENVIRONMENT=$MYFAMESYS/mfx; export XENVIRONMENT
 
 #setter FAME_TEMP for lagring av fames 2 work filer 
 FAME_TEMP=/tmp;       export FAME_TEMP
@@ -156,13 +150,8 @@ FAME_TEMP=/tmp;       export FAME_TEMP
 #setter XNLSPATH for klipping i neste versjon av fame
 XNLSPATH=$FAME/X11R6/nls;               export XNLSPATH
 
-#echo Starting the api
-
-#unset LC_CTYPE
 
 
-#old
-#works surpress fame software output
 
 #$FAME/fame i $HOME/.GetFAME/fame.inp  >>/dev/null  
 
@@ -172,12 +161,13 @@ $FAME/fame i $HOME/.GetFAME/fame.inp  &>/dev/null
 #below works all output  and fame output:
 #$FAME/fame i $HOME/.GetFAME/fame.inp
 
-iconv -t UTF-8 -f UTF-8 -c $HOME/.GetFAME/$MNAME.isojson -o $HOME/.GetFAME/$MNAME.json  
+#some issues with special norwegian characters 
+#iconv -t UTF-8 -f UTF-8 -c $HOME/.GetFAME/$MNAME.isojson -o $HOME/.GetFAME/$MNAME.json  
+#cp -f $HOME/.GetFAME/$MNAME.isojson  $HOME/.GetFAME/$MNAME.json  
 
 cat $HOME/.GetFAME/getfame.error $HOME/.GetFAME/fame.error $HOME/.GetFAME/$MNAME.json
 
 #cleanup
-rm -f $HOME/.GetFAME/$MNAME.isojson 
 rm -f  $HOME/.GetFAME/fame.inp
 
 #end of script
