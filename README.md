@@ -7,13 +7,27 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 
 ## install /test
 ```
- Create a directory ie ../../../api where the application and files can be stored
- (users need read and execute access to $REFERTID/system/myfame/api where application / api is located, all should have this (rx) access by default. ) 
- copy all files to this folder first time.
- getfameseries getfameexpr getfamenames need to be in PATH or you need to prefix with the path when executing--
- there 3 scripts cannot be renamed, and they are using the name od the script to call fame procedures and name .json files
- Test to execute ie getfameexpr from a xterm before jupiterlab to get better / proper errormessage
+1. Create a directory mkdir api ie ../../../api where the application and files can be stored
+2. copy all files to this folder first time.
+3. start FAME and compile the 2 .pro files: getfame and functions
+4. All users should have (rx) access to files in this folder) If log file stored here users need w access to common log file
+5. getfameseries getfameexpr getfamenames need to be in PATH or you need to prefix with the path when executing--
+5b.The 3 scripts cannot be renamed, and they are using the name od the script to call fame procedures and name .json files
+5c.Test to execute ie getfamenames from a xterm before jupiterlab or other to get better control errormessage
+6. Explore the directory $HOME/.GetFAME for error messages and output
+7. When getfamenames works ( may need to fix some FAME paths inside) the you can cp getfamenames getfameexpr and cp getfamenames getfameseries 
 ```
+
+>[!NOTE]
+>Idea: The 3 IDENTICAL scripts ( could/should have been written as one ) each produce a getfameexpr.json, getfamenames.json and getfameseries.json for external programs to have the possibility to read and connect the metadata from getfamenames and getfameseries in one qry /map. The scripts are identical.
+
+
+>[!NOTE]
+>Use double quotes around parameters when special characters is in use as the parameters
+>getfameexpr "mydb.db" "pct(myseries.A)"
+
+
+
 
 >[!NOTE]
 >Idea: To Use epoch date representation for comparison of timeseries of unequal frequencies and length, and use the json format in python R & not Excel. See sample.py for an starting template using python in jupiterlab and/or R-n-fameexpr.ipynb for a R-sample template.
