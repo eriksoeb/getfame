@@ -1,7 +1,5 @@
 
-
-
---coomon inp file for getfame json
+--common inp file for getfame json
 
 devi term  standard
 devi gra none
@@ -13,9 +11,12 @@ try
 load "$GETFAMESYS/getfame.pc"
 load "$GETFAMESYS/functions.pc"
 
+
 otherwise
 
 end try
 
---$getfame call:
+--$getfame call: will come here.. from script
+
+
 
