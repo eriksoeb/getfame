@@ -6,12 +6,14 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 #### common basis year: cb(seriesname,yyyy)
 
 ## install /test
-#### Create a directory ie ../../../api where the application and files can be stored
-#### (users need read and execute access to $REFERTID/system/myfame/api where application / api is located, all should have this (rx) access by default. ) 
-#### copy all files to this folder first time.
-#### getfameseries getfameexpr getfamenames need to be in PATH or you need to prefix with the path when executing--
-### there 3 scripts cannot be renamed, and they are using the name od the script to call fame procedures and name .json files
-#### Test to execute ie getfameexpr from a xterm before jupiterlab to get better / proper errormessage
+```
+ Create a directory ie ../../../api where the application and files can be stored
+ (users need read and execute access to $REFERTID/system/myfame/api where application / api is located, all should have this (rx) access by default. ) 
+ copy all files to this folder first time.
+ getfameseries getfameexpr getfamenames need to be in PATH or you need to prefix with the path when executing--
+ there 3 scripts cannot be renamed, and they are using the name od the script to call fame procedures and name .json files
+ Test to execute ie getfameexpr from a xterm before jupiterlab to get better / proper errormessage
+```
 
 >[!NOTE]
 >Idea: To Use epoch date representation for comparison of timeseries of unequal frequencies and length, and use the json format in python R & not Excel. See sample.py for an starting template using python in jupiterlab and/or R-n-fameexpr.ipynb for a R-sample template.
