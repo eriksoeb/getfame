@@ -1,15 +1,16 @@
 # getfame-json-api
 API, getfame for exporting fame data as json for further use and analysis
 Use the API to get one or more series from a Fame database, into your favorite programming language such as Python, javascript, R other..
-Using fameexpressions you can evaluate series-expressions, converting, summing and take use of all the functionality FAME offers. 
+Using fameexpressions you can evaluate series-expressions, converting, summing and take use of all the functionality and power FAME offers. 
 ### Easy to parse and read. Custom functions can be used from getfameexpr 
 #### common basis year: cb(seriesname,yyyy)
 
 ## install /test
-#### No need to install. Log on to the prodsone linux xterm or jubiterlab, and run and execute 
-#### (need access to $REFERTID/system/myfame/api where application / api is located, all should have this (rx) access by default. ) 
+#### Create a directory ie ../../../api where the application and files can be stored
+#### (users need read and execute access to $REFERTID/system/myfame/api where application / api is located, all should have this (rx) access by default. ) 
 #### copy all files to this folder first time.
 #### getfameseries getfameexpr getfamenames need to be in PATH or you need to prefix with the path when executing--
+### there 3 scripts cannot be renamed, and they are using the name od the script to call fame procedures and name .json files
 #### Test to execute ie getfameexpr from a xterm before jupiterlab to get better / proper errormessage
 
 >[!NOTE]
