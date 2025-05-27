@@ -1,11 +1,11 @@
 
-1. getfamenames :  wildcard search
+1. getfamenames :  wildcard search possible, output shows metadata
 
 
 xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfamenames $REFERTID/data/fornavn.db  "ERIK"
 xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfamenames $REFERTID/data/fornavn.db  "?ERIK?,JIM,JAN?"
 xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfamenames $REFERTID/data/fornavn.db  "?RIK,KRIS|TIN,JIM.HE?}"
-jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfamenames $REFERTID/data/fornavn.db "?ERIK" '
+jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/api/getfamenames $REFERTID/data/fornavn.db "?ERIK" '
 
 [{"GetFameJsonApi": "ErikS",
 "ApiVersion": "20240721",
@@ -29,7 +29,7 @@ jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfamenames $R
 
 sl-fame-1:~> $REFERTID/system/myfame/api/getfameexpr $REFERTID/data/fornavn.db  "ERIK"
 sl-fame-1:~> $REFERTID/system/myfame/api/getfameexpr $REFERTID/data/fornavn.db  "mave(ERIK,2)" "date 2000 to 2010"
-jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfameexpr $REFERTID/data/fornavn.db "pct(ERIK)" "date 2000 to *" '
+jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/api/getfameexpr $REFERTID/data/fornavn.db "pct(ERIK)" "date 2000 to *" '
 sl-fame-1:~> $REFERTID/system/myfame/api/getfameexpr $REFERTID/data/fornavn.db  "Lsum(ERIK,EIRIK)" "date 2000 to *"
 sl-fame-1:~> $REFERTID/system/myfame/api/getfameexpr $REFERTID/data/kpi_publ.db "convert(total.ipr,annual,constant)" "date 2020 to *"
 sl-fame-1:~> $REFERTID/system/myfame/api/getfameexpr $REFERTID/data/kpi_publ.db "total.ipr" "freq m; date jan20 to feb20"
@@ -67,7 +67,7 @@ xterm : sl-fame-1:~> $REFERTID/system/myfame/api/getfameseries /ssb/bruker/refer
 xterm : sl-fame-1:~> $REFERTID/system/myfame/api/getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "date 2024"
 xterm : sl-fame-1:~> $REFERTID/system/myfame/api/getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "freq m; date thisday(m)-5 to *""
 xterm : sl-fame-1:~> $REFERTID/system/myfame/api/getfameseries  $REFERTID/data/fornavn.db  "?ERIK,KRISTIN,JIM.HE?}" "date 2010 to 2012"
-jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfameseries $REFERTID/data/fornavn.db "ERIK?" "date 2000 to *" '
+jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/api/getfameseries $REFERTID/data/fornavn.db "ERIK?" "date 2000 to *" '
 xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfameseries /ssb/bruker/refertid/data/fornavn.db "?JAN?" "date 2000 to 2005"
 xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfameseries /ssb/bruker/refertid/data/fornavn.db "JI?" "date 2000 to *"
 
