@@ -23,8 +23,7 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 
 
 >[!NOTE]
->Use double quotes around parameters when special characters is in use as the parameters
->getfameexpr "mydb.db" "pct(myseries.A)"
+>Use double quotes around parameters when special characters is in use as the parameters ```getfameexpr "mydb.db" "pct(myseries.A)" ```
 
 
 
