@@ -1,6 +1,6 @@
 { "error":{ 
  "getfameerror":"Invalid number of arguments" ,
- "code":"400" ,
+ "code":"400",
  "readme":"/ssb/bruker/refertid/system/myfame/api/readme.txt" ,
  "example": [{ 
  "example1":"getfamenames /ssb/bruker/refertid/data/kpi_publ.db 'total?'" , 
