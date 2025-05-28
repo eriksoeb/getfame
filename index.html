@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>MyFame</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background: #282c34;
+            color: darkred;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.0em;
+        }
+
+        nav {
+            display: none;
+            flex-direction: column;
+            background: #282c34;
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        nav a {
+            color: white;
+            padding: 15px;
+            text-decoration: none;
+            border-bottom: 1px solid #444;
+        }
+
+        .menu-toggle {
+            font-size: 24px;
+            cursor: pointer;
+                  display: flex;
+                    justify-content: flex-end;
+        }
+
+ 
+
+        
+
+        main {
+            padding: 20px;
+            text-align: center;
+        }
+
+        footer {
+            background: #ddd;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+            font-size: 10px; /* or try 0.8em or smaller */
+        }
+
+        @media (min-width: 600px) {
+            nav {
+                display: flex !important;
+                position: static;
+                flex-direction: row;
+                background: none;
+                box-shadow: none;
+            }
+            nav a {
+                border: none;
+                padding: 0 15px;
+            }
+            .menu-toggle {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+       <!-- <div class="logo">MyFamenot needed </div>-->
+        <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+        <nav id="menu">
+            <a href="index.html">Home</a>
+
+        </nav>
+    </header>
+
+    <main>
+        <h2>Welcome to getfame</h2>
+        <p>getfamenames getfameseries & getfameexpr</p>
+
+        <br>
+        <br>
+
+        
+<a href="MyFameUsersGuide2025.pdf" download>Download the User Guide (PDF)</a>
+
+        <br>
+        <br>
+        <br>
+
+        <a href="mailto:eriksoeb@gmail.com?subject=fame">Contact About MyFame</a>
+
+            <br>
+            <br>
+        <img src="fame.jpg" alt="Fame Project Image" style="width: 90%; max-width: 400px;">
+
+     <br>
+
+        <p><em>"Why make it too complicated?"</em></p>
+        
+    </main>
+
+    <footer>
+        Erik &copy; 2024 -2025 Getfame Jsom api
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            if (menu.style.display === 'flex') {
+                menu.style.display = 'none';
+            } else {
+                menu.style.display = 'flex';
+            }
+        }
+    </script>
+
+</body>
+</html>
