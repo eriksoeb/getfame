@@ -92,16 +92,6 @@ fi
 
 
 
-#jun2
-if [ $MNAME == "getfamenames" ] && [ $# -ne 3 ]; then
-#echo " getfamenames must have exactly 3 argumenst $MNAME $#"
-cp $GETFAMESYS/error.$MNAME $ERROR_FILE  
-cat $ERROR_FILE
-exit 1
-fi
-
-
-
 
 #jun2
 if [ $# -lt 3 ] || [ $# -gt 4 ];  then
