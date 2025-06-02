@@ -1,11 +1,12 @@
 { "error":{ 
  "getfameerror":"Invalid number of arguments" ,
- "code":"400",
- "readme":"/ssb/bruker/refertid/system/myfame/api/readme.txt" ,
+ "code":"400" ,
  "example": [{ 
- "example1":"getfameseries /ssb/bruker/refertid/data/kpi_publ.db 'total.ipr'" , 
- "example2":"getfameseries /ssb/bruker/refertid/data/kpi_publ.db 'total.ipr' 'freq m; date jan2018 to *'" , 
- "example3":"getfameseries /ssb/bruker/refertid/data/kpi_publ.db '?ota?'" , 
- "example3":"getfameseries $REFERTID/data/kpi_publ.db '?ota?i.IPR' 'convert on;freq A; date 2022 to *" , 
- "example7":"getfameseries $HOME/erik.db 'STA?'"  
+ "example0":"use double quotes when having more databases or wildcards separated with commas" , 
+ "example1":"getfame -s /ssb/bruker/refertid/data/kpi_publ.db 'total.ipr'" , 
+ "example2":"getfame -s /ssb/bruker/refertid/data/kpi_publ.db 'total.ipr' 'freq m; date jan2018 to *'" , 
+ "example3":"getfame -s /ssb/bruker/refertid/data/kpi_publ.db '?ota?'" , 
+ "example4":"getfame -s $REFERTID/data/kpi_publ.db '?ota?i.IPR' 'convert on;freq A; date 2022 to *" , 
+ "example5":"getfame -s '$HOME/erik.db,edb2.db' 'STA?.TOT?, GDP?Q.S' 'date 2025'"   
  }]  }} 
+
