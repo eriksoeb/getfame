@@ -14,8 +14,9 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 5. getfameseries getfameexpr getfamenames need to be in PATH or you need to prefix with the path when executing--
 5b.The 3 scripts cannot be renamed, and they are using the name od the script to call fame procedures and name .json files
 5c.Test to execute ie getfamenames from a xterm before jupiterlab or other to get better control errormessage
-6. Explore the directory $HOME/.GetFAME for error messages and output
-7. When getfamenames works ( may need to fix some FAME paths inside) the you can cp getfamenames getfameexpr and cp getfamenames getfameseries 
+5d.New users may use getfame -n getfame -s and getfame -e indtead of the 3 identical scripts.
+6. Explore the directory $HOME/.GetFAME for error messages and output (this will also be listed as part of the execution)
+7. When getfamenames works ( need to change FAME paths inside to start Fame ) then you can cp getfamenames getfameexpr and cp getfamenames getfameseries 
 ```
 
 >[!NOTE]
