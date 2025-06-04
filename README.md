@@ -2,7 +2,7 @@
 API, getfame for exporting fame data as json for further use and analysis
 Use the API to get one or more series from a Fame database, into your favorite programming language such as Python, javascript, R other..
 Using fameexpressions you can evaluate series-expressions, converting, summing and take use of all the functionality and power FAME offers. 
-### Easy to parse and read. Custom functions can be used from getfameexpr 
+### Easy to parse and read. Custom functions can be used from getfameexpr getfame -e
 #### getfame -e can be used with custom functions inside functions.pro ie common basis year: cb(seriesname,yyyy)
 
 ## install /test
@@ -16,7 +16,8 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 5c.Test to execute ie getfamenames from a xterm before jupiterlab or other to get better control errormessage
 5d.New users may use getfame -n getfame -s and getfame -e indtead of the 3 identical scripts.
 6. Explore the directory $HOME/.GetFAME for error messages and output (this will also be listed as part of the execution)
-7. When getfamenames works ( need to change FAME paths inside to start Fame ) then you can cp getfamenames getfameexpr and cp getfamenames getfameseries 
+7. When getfamenames works ( need to change FAME paths inside to start Fame ) then you can cp getfamenames getfameexpr and cp getfamenames getfameseries
+8. The getfame script isd different from getfamenames, getfameseries & getfameexpr as it takes different num of arguments. 
 ```
 
 >[!NOTE]
