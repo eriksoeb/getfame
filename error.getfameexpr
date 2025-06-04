@@ -9,7 +9,7 @@
  "example4":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'convert(K01.ipr,quarterly, constant)'" , 
  "example5":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'LAVE(K01.IPR,K02.IPR,K03.IPR)'" , 
  "example6":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'LAVE(K01.IPR,K02.IPR,K03.IPR)' 'freq m; date feb90 to aug90'" , 
- "example7":"getfame -e '$HOME/erik.db, edb2.db' 'mave(pct(STATS))'"  
+ "example7":"getfame -e '$HOME/erik.db, another.db' 'mave(pct(Myseries))'"  
  }]  }} 
 
 
