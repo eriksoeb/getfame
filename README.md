@@ -35,7 +35,7 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 
 ## The getfame toolbox:
 > [!IMPORTANT]
-> 1)getfamenames, 2)getfameseries & 3)getfameexpr
+> 1)getfamenames == getfame -n, 2)getfameseries == getfame -s  & 3)getfameexpr == getfame -e
 
 
 ### 1. getfamenames :  wildcard/objectname search for famenames -> gets metadata info ( no date param)
