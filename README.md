@@ -20,6 +20,7 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 
 >[!NOTE]
 >Idea: The 3 IDENTICAL scripts ( could/should have been written as one ) each produce a getfameexpr.json, getfamenames.json and getfameseries.json for external programs to have the possibility to read and connect the metadata from getfamenames and getfameseries in one qry /map. The scripts are identical.
+>The script getfame can be used instead in attition to the 3 identical scripts, then use getfame -n getfame -s getfame -e
 
 
 >[!NOTE]
