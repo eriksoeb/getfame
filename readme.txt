@@ -1,5 +1,5 @@
 
-1. getfamenames :  wildcard search possible, output shows metadata
+1. getfamenames getfame -n :  wildcard search possible, output shows metadata
 
 
 xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfamenames $REFERTID/data/fornavn.db  "ERIK"
@@ -25,7 +25,7 @@ jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/api/getfamenames $R
 
 
 
-2. getfameexpr:  (gets one series, based on a fame expression. recommended.) last argument not required. Full flexibility for converting
+2. getfameexpr getfame -e:  (gets one series, based on a fame expression. recommended.) last argument not required. Full flexibility for converting
 
 sl-fame-1:~> $REFERTID/system/myfame/api/getfameexpr $REFERTID/data/fornavn.db  "ERIK"
 sl-fame-1:~> $REFERTID/system/myfame/api/getfameexpr $REFERTID/data/fornavn.db  "mave(ERIK,2)" "date 2000 to 2010"
@@ -61,7 +61,7 @@ sl-fame-1:~> $REFERTID/system/myfame/api/getfameexpr $REFERTID/data/fornavn.db  
 
 
 
-3. getfameseries  ( 1 or more series , but no functions )  last argument not required. Convert will use observed from fame
+3. getfameseries getfame -s ( 1 or more series , but no functions )  last argument not required. Convert will use observed from fame
 
 xterm : sl-fame-1:~> $REFERTID/system/myfame/api/getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" 
 xterm : sl-fame-1:~> $REFERTID/system/myfame/api/getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "date 2024"
