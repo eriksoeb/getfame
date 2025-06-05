@@ -1,5 +1,5 @@
 #sample python program that takes some open fame data and plot it using json epoch
-#Jimmy & Erik 2024 ; - executes from jupiterlab
+#Jimmy & Erik 2024-2025 ; - executes from jupiterlab
 #pysample.ipynb
 
 
@@ -12,10 +12,10 @@ import os
 
 
 famebase = '$REFERTID/data/fornavn.db'
-famesoek = 'ERIK?,JANN?,OLE'
+famesoek = 'OLE,ERIK?,BR?R'
 famedato = 'date 2000 to *'
 
-api = "getfameseries"
+api = "getfame -s"
 apipath = "$REFERTID/system/myfame/api/"
 
 # Hente Fame kommando with apipath and api concatenation
@@ -28,7 +28,7 @@ subprocess.run(command, shell=True, stdout=subprocess.DEVNULL, stderr=subprocess
 home_dir = os.getenv("HOME")
 
 # Construct the full path using the $HOME variable and the api variable
-file_path = os.path.join(home_dir, ".GetFAME", f"{api}.json")
+file_path = os.path.join(home_dir, ".GetFAME", "getfameseries.json")
 
 
 # Open the sample JSON file using the full path
@@ -89,4 +89,3 @@ plt.grid(True)
 plt.legend()
 
 plt.show()
-
