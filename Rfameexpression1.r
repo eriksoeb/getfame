@@ -1,9 +1,7 @@
 #R pRogram executed from jupiteRlab
 #chaRting one fameexpRession
 #can pRobably be improved by u ???
-# eRik Oct 2024
-
-
+#eRik Oct 2024 - jun 2025
 
 # Load required libraries
 library(jsonlite)
@@ -12,39 +10,41 @@ library(ggplot2)
 library(scales)
 library(lubridate)
 library(tidyr)
-
- 
+#works with 1 series lør
 famebase <- "$REFERTID/data/fornavn.db"  # Adjust with your actual filename
 famesoek <- "ERIK+EIRIK"
 famedato <- "date 2000 to *"
 
 # Construct the command with correctly quoted arguments
 command <- paste("ssh sl-fame-1.ssb.no '",              
-                 "$REFERTID/system/myfame/api/getfameexpr \"", famebase, 
+                 "$REFERTID/system/myfame/api/getfame -e \"", famebase, 
                  "\" \"", famesoek, "\" \"", famedato, "\"'", sep="")
 
 # Print the command to console for debugging
-cat("Constructed Command:\n", command, "\n")
+#cat("Constructed Command:\n", command, "\n")
 
 # Execute the command and capture the output
 output <- system(command, intern = TRUE, ignore.stderr = FALSE)
 
-
-  # Get the HOME environment variable
+    # Get the HOME environment variable
     home_dir <- Sys.getenv("HOME")
 
-  # Construct the full path using the home directory
+   # Construct the full path using the home directory
     json_file_path <- file.path(home_dir, ".GetFAME/getfameexpr.json")
-    
-   
-  # Read the JSON file
-    json_data <- fromJSON(json_file_path)
+
+
+
+#this looks ok
+#print (json_data)
+
 
 # Now read the actual data from the result file if it exists
 
     series_data =json_data  # Read the series data from the file
     
- 
+    # Print the structure to understand its format
+    #str(series_data)
+    
     # Initialize an empty data frame to store all data
     df_all <- data.frame()
 
@@ -80,3 +80,8 @@ output <- system(command, intern = TRUE, ignore.stderr = FALSE)
         theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
         guides(color = guide_legend(title = "Series")) +
         scale_y_continuous(labels = comma)
+
+
+
+
+
