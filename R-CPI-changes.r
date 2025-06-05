@@ -24,7 +24,7 @@ df_all <- data.frame()
 for (famesoek in series_list) {
     # Construct the command for the current series
     command <- paste("ssh sl-fame-1.ssb.no '",              
-                     "$REFERTID/system/myfame/api/getfameexpr \"", famebase, 
+                     "$REFERTID/system/myfame/api/getfame -e \"", famebase, 
                      "\" \"", famesoek, "\" \"", famedato, "\"'", sep="")
     
     # Execute the command and capture the output
