@@ -3,6 +3,7 @@
 
 #Erik Soeberg creates json file with universal epoch date for comparisons and charting in tools like highchart javascript
 #June/July 2024/2025
+#This script can be removed and be replace by using getfame -e
 
 
 
