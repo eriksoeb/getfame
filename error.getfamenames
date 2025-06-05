@@ -1,4 +1,4 @@
-{ "error":{ 
+{ "error":{  
  "getfameerror":"Invalid number of arguments" ,
  "code":"400" ,
  "example": [{ 
