@@ -13,7 +13,7 @@ library(lubridate)
 
 # Set parameters for the API call
 famebase <- "$REFERTID/data/fornavn.db"  # Adjust with your actual filename
-# n Series to fetch => erik,  kristin, and with expressions
+# n Series to fetch => erik,  kristin, and with expressions, nothing is also an expression, but no wildcarding.
 series_list <- c("ERIK", "KRISTIN", "mave(LSUM(ERIK,EIRIK),3)", "ERIK-EIRIK")  
 famedato <- "date 2000 to 2012"
 
@@ -25,7 +25,7 @@ mytitle <-""
 for (famesoek in series_list) {
     # Construct the command for the current series
     command <- paste("ssh sl-fame-1.ssb.no '",              
-                     "$REFERTID/system/myfame/api/getfameexpr \"", famebase, 
+                     "$REFERTID/system/myfame/api/getfame - \"", famebase, 
                      "\" \"", famesoek, "\" \"", famedato, "\"'", sep="")
     
     # Execute the command and capture the output
