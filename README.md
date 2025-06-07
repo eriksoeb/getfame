@@ -1,7 +1,7 @@
 # getfame-json-api
 API, getfame for exporting fame data as json for further use and analysis
 Use the API to get one or more series from a Fame database, into your favorite programming language such as Python, javascript, R other..
-Using fameexpressions you can evaluate series-expressions, converting, summing and take use of all the functionality and power FAME offers. 
+Using getfame -e fameexpressions you can evaluate series-expressions, converting, summing and take use of all the functionality and power FAME offers. 
 ### Easy to parse and read. Custom functions can be used from getfameexpr getfame -e
 #### getfame -e can be used with custom functions inside functions.pro ie common basis year: cb(seriesname,yyyy)
 
@@ -11,13 +11,12 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 2. copy all files to this folder first time.
 3. start FAME and compile the 2 .pro files: getfame and functions
 4. All users should have (rx) access to files in this folder) If log file stored here users need w access to common log file
-5. getfameseries getfameexpr getfamenames need to be in PATH or you need to prefix with the path when executing--
-5b.The 3 scripts cannot be renamed, and they are using the name od the script to call fame procedures and name .json files
-5c.Test to execute ie getfamenames from a xterm before jupiterlab or other to get better control errormessage
-5d.New users may use getfame -n getfame -s and getfame -e indtead of the 3 identical scripts.
+5. getfame needs to be in PATH or you need to prefix with the path when executing
+5b.Test to execute ie getfame-n  from a xterm before jupiterlab or other to get better control errormessage
+5c.New users may use getfame -n getfame -s and getfame -e instead of the 3 identical scripts getfamenames getfamenames getfameexpr as they are to be phased out
 6. Explore the directory $HOME/.GetFAME for error messages and output (this will also be listed as part of the execution)
-7. When getfamenames works ( need to change FAME paths inside to start Fame ) then you can cp getfamenames getfameexpr and cp getfamenames getfameseries
-8. The getfame script isd different from getfamenames, getfameseries & getfameexpr as it takes different num of arguments. 
+7. The new getfame script isd different from getfamenames, getfameseries & getfameexpr as it takes different num of arguments.
+8. Use getfame -n getfame -s and the most advanced getfame -e 
 ```
 
 >[!NOTE]
@@ -39,12 +38,12 @@ Using fameexpressions you can evaluate series-expressions, converting, summing a
 > 1)getfamenames == getfame -n, 2)getfameseries == getfame -s  & 3)getfameexpr == getfame -e
 
 
-### 1. getfamenames :  wildcard/objectname search for famenames -> gets metadata info ( no date param)
+### 1. getfamenames / getfame -n:  wildcard/objectname search for famenames -> gets metadata info ( no date param)
 
 ```
-xterm :   getfamenames $REFERTID/data/fornavn.db  "ERIK"
+xterm :   getfame -n $REFERTID/data/fornavn.db  "ERIK"
 xterm :   getfame -n   $REFERTID/data/fornavn.db  "?ERIK?,JIM,JAN?"
-xterm :   getfamenames $REFERTID/data/fornavn.db  "?RIK,KRISTIN,JIM,HE?"
+xterm :   getfame -n $REFERTID/data/fornavn.db  "?RIK,KRISTIN,JIM,HE?"
 xterm :   getfame -n   "/ssb/bruker/refertid/data/kpi_publ.db, /ssb/bruker/refertid/data/fornavn.db"  "?T?I?" | more
 
 jupiterlab :  !ssh sl-fame-1.ssb.no 'getfamenames $REFERTID/data/fornavn.db "?ERIK" '
@@ -67,15 +66,15 @@ jupiterlab :  !ssh sl-fame-1.ssb.no 'getfamenames $REFERTID/data/fornavn.db "?ER
 }]
 ```
 
-### 2. getfameseries  -> gets observations for >=1 series/wildcards. No functions.  Convert will use observed settings from FAME definition
+### 2. getfameseries  / getfame -s -> gets observations for >=1 series/wildcards. No functions.  Convert will use observed settings from FAME definition
 ```
-xterm:      getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" 
-xterm:      getfame -s    /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "date 2024"
-xterm:      getfameseries /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "freq m; date thisday(m)-5 to *""
-xterm:      getfame -s    $REFERTID/data/fornavn.db  "?ERIK,KRISTIN,JIM?}" "date 2010 to 2012"
-xterm:      getfameseries /ssb/bruker/refertid/data/fornavn.db "?JAN?" "date 2000 to 2005"
-xterm:      getfame -s    /ssb/bruker/refertid/data/fornavn.db "JI?" "date 2000 to *; deci 2"
-jupiterlab: !ssh sl-fame-1.ssb.no 'getfameseries $REFERTID/data/fornavn.db "ERIK?" "date 2000 to *" '
+xterm:      getfame -s $REFERTID/data/kpi_publ.db "total.ipr" 
+xterm:      getfame -s  /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "date 2024"
+xterm:      getfame -s /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "freq m; date thisday(m)-5 to *""
+xterm:      getfame -s  $REFERTID/data/fornavn.db  "?ERIK,KRISTIN,JIM?}" "date 2010 to 2012"
+xterm:      getfame -s /ssb/bruker/refertid/data/fornavn.db "?JAN?" "date 2000 to 2005"
+xterm:      getfame -s  "mynames.db, /ssb/bruker/refertid/data/fornavn.db"  "JI?" "date 2000 to *; deci 2"
+jupiterlab: !ssh sl-fame-1.ssb.no 'getfame -s $REFERTID/data/fornavn.db "ERIK?" "date 2000 to *" '
 ```
 => sample getfameseries json result:
   ```
@@ -126,17 +125,17 @@ jupiterlab: !ssh sl-fame-1.ssb.no 'getfameseries $REFERTID/data/fornavn.db "ERIK
 ```
 
 
-### 3. getfameexpr:  ->gets observations, series-expression as a result, based on a fame expression. recommended. Full flexibility for converting.
+### 3. getfameexpr / getfame -e:  ->gets observations, series-expression as a result, based on a fame expression. recommended. Full flexibility for converting.
 ```
-xterm:          getfameexpr $REFERTID/data/fornavn.db  "ERIK"
+xterm:          getfame -e $REFERTID/data/fornavn.db  "ERIK"
 xterm:          getfame -e  $REFERTID/data/fornavn.db  "mave(ERIK,2)" "date 2000 to 2010"
-xterm:          getfameexpr $REFERTID/data/fornavn.db  "Lsum(ERIK,EIRIK)" "date 2000 to *"
+xterm:          getfame -e $REFERTID/data/fornavn.db  "Lsum(ERIK,EIRIK)" "date 2000 to *"
 xterm:          getfame -e  $REFERTID/data/kpi_publ.db "convert(total.ipr,annual,constant)" "date 2020 to *"
---use eof custom common basis to set base-year to 2010 (instead of current 2015:)
-xterm:          getfameexpr /ssb/bruker/refertid/data/kpi_publ.db "cb(total.ipr,2010)"   "date 2010 to 2020"   
+--use eof custom common basis to set base-year to 2010 (instead of current 2015:) more custom functions are available
+xterm:          getfame -e /ssb/bruker/refertid/data/kpi_publ.db "cb(total.ipr,2010)"   "date 2010 to 2020"   
 xterm:          getfame -e  $REFERTID/data/kpi_publ.db "total.ipr" "freq m; date jan20 to feb20;deci 0"
-xterm:          getfameexpr $REFERTID/data/fornavn.db  "ERIK+EIRIK" "date 2000 to 2010;deci 1"
-jupiterlab :    !ssh sl-fame-1.ssb.no 'getfameexpr $REFERTID/data/fornavn.db "pct(ERIK)" "date 2000 to *" '
+xterm:          getfame -e  "mynames.db, $REFERTID/data/fornavn.db"  "ERIK+EIRIK" "date 2000 to 2010;deci 1"
+jupiterlab :    !ssh sl-fame-1.ssb.no 'getfame -e $REFERTID/data/fornavn.db "pct(ERIK)" "date 2000 to *" '
 ```
 => sample getfameexpr json result:
  ```
