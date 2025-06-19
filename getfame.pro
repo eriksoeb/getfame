@@ -8,6 +8,7 @@
 --jul2024 init version with json for jupiterlab R Python 
 --sep2024 takes fame argument, such as freq a, convert on; deci 1 semikolon separated in double quotes
 --oct 2024 can take comma separated list of wildcards
+
 --dec2024 can open several database comma separated
 --jun2025 openeing databases as of the databasename ( withouth path and without .
 --jun2025 Can use getfame -e with dbname'series
@@ -17,6 +18,7 @@
 --jun2025 Handeling 2 similar databasenames if they are opened in different paths..by adding 2,3,4 to the openas names
 --jun2025 Adding frequiency for series and NC for formulas using the -n getfameseriesnames option
 --jun2025 Cleaning away old writerror procedure
+--jun2025 writerrror back as exit procedure if errors in script
 
 ---------------------------------------------------------------------------------------------------------------------
 procedure $createwildlist
@@ -282,8 +284,6 @@ ignore on
 deci auto
 end proc
 ------------------------------------------
-
-
 
 
  
@@ -566,11 +566,9 @@ end proc
 
 
 
--------------------not in use after jun 4 2025----------------------
-procedure $writeerror_phasedot
-argument myerror, mybase
-
---image date value annual "<FYEAR>-01-01"
+-------------------not in use after jun 4 2025 only startup----------------------
+procedure $writeerror
+argument myerror
  
 local scalar err1: string = replace(myerror, NEWLINE, "-")
 local scalar err2: string = replace(err1, quote, "'")
@@ -582,12 +580,12 @@ open <kind text; acc overwrite>file ("$HOME/.GetFAME/fame.error") as ERRORFILE
 
 write "{" + quote+"error"+quote+": {"  to ERRORFILE
 write quote+"GetFameError"+quote+":"+quote+err2+quote + "," to ERRORFILE
-write quote+"Database"+quote+":"+quote+mybase+quote + "," to ERRORFILE
 write quote+"Date"+quote+":"+quote+myday +"T"+now+quote to ERRORFILE
 
 write " } }"  to ERRORFILE
 
 close !ERRORFILE
+$exitfame
 
 end proc
 
@@ -701,7 +699,7 @@ local scalar mynow :string = string(datefmt(created(start_time,secondly),"<YEAR>
 
 try
 write "[{"+quote+"GetFAME_Json_Api" +quote+": "+ quote+"Erik.Soberg@ssb.no" + +quote+","  to OUTFILE
-write quote+"Version" +quote+": "+ quote+"Oslo-20250605" + quote+","  to OUTFILE
+write quote+"Version" +quote+": "+ quote+"Oslo-20250619" + quote+","  to OUTFILE
 
 write quote+"Executed" +quote+": "+ quote+ + mynow +quote+","  to OUTFILE
 write quote+"Famever"+quote+": "+quote+ string(@release)+quote+","  to OUTFILE
@@ -840,6 +838,7 @@ end function
 
 
 --Eof
+
 
 
 
