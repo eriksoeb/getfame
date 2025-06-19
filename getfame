@@ -3,15 +3,30 @@
 
 #Erik Soeberg creates json file with universal epoch date for comparisons and charting in tools like highchart javascript
 #June/July 2024/2025
-#run using: getfame -n database.db series?
-#run using: getfame -s database.db series? "date 2023 to 2025"
-#run using: getfame -e "db1.db, db2, db3" "pct(db2'series)" "deci 1; date 2025" 
+
+#location of program is the place the system getfame software is located
+#setting to same folder as where the getfame script is:
+GETFAMESYS="$(dirname "$(readlink -f "$0")")"
+export GETFAMESYS;
 
 
-#MNAME=$(basename "$0")
+show_usage() {
+  echo "first param to getfame must be -n -s or -e"
+  echo "getfame -n, getfame -s or expresions getfame -e"
+  echo 'example : getfame -n $REFERTID/data/kpi_publ.db "total?" '
+  echo 'example : getfame -s $REFERTID/data/kpi_publ.db "total?" "date 2025;deci1" '
+  echo 'example : getfame -e $REFERTID/data/kpi_publ.db "pct(total.ipr)" "date 2024 to *; deci1" '
+  echo "See  $GETFAMESYS/readme.txt or getfame -h for more samples"
+  echo "Please try again"
+  exit 1
+}
+
+
+
+
+
 
 SWITCH=$1
-MNAME="getfamenames"
 
 if [[ "$SWITCH" == "-s" ]]; then
 MNAME="getfameseries"
@@ -21,20 +36,21 @@ MNAME="getfameexpr"
 
 elif [[ "$SWITCH" == "-n" ]]; then
 MNAME="getfamenames"
-else
 
-echo "first param to getfame must be -n -s or -e"
-echo "getgamenames -n, getfameseries -s getfameexpr -e"
-echo "Please try again"
-echo "example : getfame -s kpi.db total?"
+elif [[ "$SWITCH" == "-m" ]]; then
+MNAME="getfamenames"
+# n/m names/ metadata both works
+
+elif [[ "$SWITCH" == "-h" ]]; then
+MNAME="noname"
+cat $GETFAMESYS/readme.txt
 exit 1
 
+else
+
+show_usage
 fi
 
-
-#location of program is the plave the systemi software is located
-GETFAMESYS="$(dirname "$(readlink -f "$0")")"
-export GETFAMESYS;
 
 
 #if log have it where the sueres have write access to the file
@@ -80,17 +96,6 @@ ERROR_FILE=$HOME/.GetFAME/getfame.error
 
 MYDATE=$(date +'%Y-%m-%dT%H:%M:%S')
 
-#jun2
-if [ $# -eq 0 ]; then
-#echo " needs arguments, show readme"
-cat $GETFAMESYS/readme.txt 
-echo "This is the readme.txt  $GETFAMESYS/readme.txt "
-echo "The APIs needs arguments - scroll to read or combine with more $GETFAMESYS/readme.txt"
-exit 1
-fi
-
-
-
 
 
 #jun2
@@ -100,14 +105,11 @@ cat $ERROR_FILE
 exit 1
 fi
 
- 
 
 MYDISPLAY=$DISPLAY;export MYDISPLAY
 
 
-
 #setter FAME_PATH til katalogen der fame.inp som starter applikasjonen ligger.
-FAME_PATH=$GETFAMESYS; export FAME_PATH
 FAME_PATH=$HOME/.GetFAME; export FAME_PATH
 
 
@@ -128,7 +130,6 @@ fi
 
 cp -f  $GETFAMESYS/api.inp $HOME/.GetFAME/fame.inp
 
-echo "-- debugger  $MNAME $GETFAMESYS  $#  $HOME  " >> $HOME/.GetFAME/fame.inp
 
 
 #jun2
@@ -139,30 +140,28 @@ else
 echo 'try; $'$MNAME '  ' "\""$2"\"" ', ' "\""$3"\"" ', '"\""$4"\""  >> $HOME/.GetFAME/fame.inp
 fi
 
-echo '; otherwise; $writeerror lasterror, lasterror; end try; ' >> $HOME/.GetFAME/fame.inp
+echo '; otherwise; $writeerror lasterror; end try; ' >> $HOME/.GetFAME/fame.inp
 
 
 
-#setter FAME_TEMP for lagring av fames 2 work filer 
+#FAME_TEMP for storing of fames 2 work files 
 FAME_TEMP=/tmp;       export FAME_TEMP
-
-#setter XNLSPATH for klipping i neste versjon av fame
-XNLSPATH=$FAME/X11R6/nls;               export XNLSPATH
-
-
 
 
 
 #better when fame licenece expires:
 $FAME/fame i $HOME/.GetFAME/fame.inp  &>/dev/null  
 
-
-
-cat $HOME/.GetFAME/getfame.error $HOME/.GetFAME/fame.error $HOME/.GetFAME/$MNAME.json
+#if exist only if success
+if [ -s $HOME/.GetFAME/$MNAME.json ]
+then
+ cat  $HOME/.GetFAME/$MNAME.json
+else
+ cat $HOME/.GetFAME/getfame.error $HOME/.GetFAME/fame.error
+fi
 
 #cleanup
 rm -f  $HOME/.GetFAME/fame.inp
 
 #end of script
-
 
