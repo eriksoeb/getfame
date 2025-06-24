@@ -1,9 +1,5 @@
-#eRik Oct 2024
-#Using Jupiterlab with R to getfameexpr
-#Sample-charting with consumer price index - public avail ssb-data
 
-
-
+# Load required libraries
 library(jsonlite)
 library(dplyr)
 library(ggplot2)
@@ -12,13 +8,14 @@ library(lubridate)
 
 
 famebase <- "$REFERTID/data/kpi_publ.db"
-#series_list <- c("pct(total.ipr)", "pct(convert(total.ipr,ann,con,ave))" , "pct(convert(total.ipr,ann,disc,ave))" , "ytypct(total.ipr)" )
 famedato <- "freq m; date 2005 to *"
-series_list <- c("pct(convert(total.ipr,ann,con,end))", "pct(convert(total.ipr,ann,linear,ave))","ytypct(total.ipr)" )
+series_list <- c("pct(convert(total.ipr,ann,con,end))", 
+                 "pct(convert(total.ipr,ann,linear,ave))",
+                 "ytypct(total.ipr)", 
+                 "mave(pct(K01.IPR),3" )
 
 # Initialize an empty data frame to store all data
 df_all <- data.frame()
-
 
 # Process each series
 for (famesoek in series_list) {
@@ -29,6 +26,7 @@ for (famesoek in series_list) {
     
     # Execute the command and capture the output
     output <- system(command, intern = TRUE, ignore.stderr = FALSE)
+    
     
     # Get the HOME environment variable
     home_dir <- Sys.getenv("HOME")
@@ -82,14 +80,13 @@ for (famesoek in series_list) {
 # Ensure the final data frame handles NA values correctly
 if (nrow(df_all) > 0) {
     # Plot the data using ggplot2
+    options(repr.plot.width = 16, repr.plot.height = 6)  # Adjust the width and height as needed
 
-# Adjust the width and height as needed
- options(repr.plot.width = 16, repr.plot.height = 6)  
 
     ggplot(df_all, aes(x = Date, y = Value, color = Series)) +
   geom_line() +
   scale_x_datetime(labels = date_format("%b%y"), date_breaks = "1 year") +
-  labs(title = paste("ChaRt: ", "CPI % Changes"),
+  labs(title = paste("Chart: ", "CPI % Changes"),
        x = "month/year", y = "% Changes of CPI") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
@@ -99,6 +96,4 @@ if (nrow(df_all) > 0) {
 } else {
     cat("\nNo data to plot.\n")
 }
-
-
 
