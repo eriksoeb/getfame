@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 #Erik Soeberg creates json file with universal epoch date for comparisons and charting in tools like highchart javascript
@@ -17,6 +16,8 @@ show_usage() {
   echo 'example : getfame -s $REFERTID/data/kpi_publ.db "total?" "date 2025;deci1" '
   echo 'example : getfame -e $REFERTID/data/kpi_publ.db "pct(total.ipr)" "date 2024 to *; deci1" '
   echo "See  $GETFAMESYS/readme.txt or getfame -h for more samples"
+  echo "PS: getfame -t test one given database read access"
+  echo "PS: getfame -nq getfame -sq getfame -eq runs silent QUITE mode "
   echo "Please try again"
   exit 1
 }
@@ -28,14 +29,17 @@ show_usage() {
 
 SWITCH=$1
 
-if [[ "$SWITCH" == "-s" ]]; then
+if [[ "$SWITCH" == "-s" || "$SWITCH" == "-sq" ]]; then
 MNAME="getfameseries"
 
-elif [[ "$SWITCH" == "-e" ]]; then
+elif [[ "$SWITCH" == "-e" || "$SWITCH" == "-eq" ]]; then
 MNAME="getfameexpr"
 
-elif [[ "$SWITCH" == "-n" ]]; then
+elif [[ "$SWITCH" == "-n"  || "$SWITCH" == "-nq" ]]; then
 MNAME="getfamenames"
+
+elif [[ "$SWITCH" == "-t"  || "$SWITCH" == "-tq" ]]; then
+MNAME="getfametest"
 
 elif [[ "$SWITCH" == "-m" ]]; then
 MNAME="getfamenames"
@@ -52,9 +56,9 @@ show_usage
 fi
 
 
-
+#work without log not required
 #if log have it where the sueres have write access to the file
-export GETFAMELOG="$REFERTID/system/myfame/getlog.txt"
+#export GETFAMELOG="$REFERTID/system/myfame/getlog.txt"
 
 #lagrer resultatfil, samme som vises i skjerm terminal output:
 if test ! -d $HOME/.GetFAME; then
@@ -99,7 +103,7 @@ MYDATE=$(date +'%Y-%m-%dT%H:%M:%S')
 
 
 #jun2
-if [ $# -lt 3 ] || [ $# -gt 4 ];  then
+if [ $# -lt 2 ] || [ $# -gt 4 ];  then
 cp $GETFAMESYS/error.$MNAME $ERROR_FILE  
 cat $ERROR_FILE
 exit 1
@@ -133,7 +137,13 @@ cp -f  $GETFAMESYS/api.inp $HOME/.GetFAME/fame.inp
 
 
 #jun2
-if  [ $# -eq 3 ]; then
+#
+#
+#
+if  [ $# -eq 2 ]; then
+echo 'try; $'$MNAME '  ' "\""$2"\""   >> $HOME/.GetFAME/fame.inp
+
+elif  [ $# -eq 3 ]; then
 echo 'try; $'$MNAME '  ' "\""$2"\"" ', ' "\""$3"\"" ',' "\""$DUMMY"\""  >> $HOME/.GetFAME/fame.inp
 
 else
@@ -152,10 +162,14 @@ FAME_TEMP=/tmp;       export FAME_TEMP
 #better when fame licenece expires:
 $FAME/fame i $HOME/.GetFAME/fame.inp  &>/dev/null  
 
-#if exist only if success
-if [ -s $HOME/.GetFAME/$MNAME.json ]
-then
+#if exist only if success no output to screen if queiet mode
+#if [[ "$SWITCH" == "-s" || "$SWITCH" == "-sq" ]]; then
+if [[ -s $HOME/.GetFAME/$MNAME.json  ]]; then
+
+case "$SWITCH" in 
+ -n|-e|-s|-t)
  cat  $HOME/.GetFAME/$MNAME.json
+esac
 else
  cat $HOME/.GetFAME/getfame.error $HOME/.GetFAME/fame.error
 fi
@@ -164,4 +178,5 @@ fi
 rm -f  $HOME/.GetFAME/fame.inp
 
 #end of script
+
 
