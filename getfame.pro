@@ -1,5 +1,3 @@
-
-
 ----------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------
 --ERIK Summer 2024 / 2025 erik.soberg@ssb.no / eriksoeb@gmail.com       
@@ -19,6 +17,8 @@
 --jun2025 Adding frequiency for series and NC for formulas using the -n getfameseriesnames option
 --jun2025 Cleaning away old writerror procedure
 --jun2025 writerrror back as exit procedure if errors in script
+--jun2025 added getfame -h and getfame -t to test database 
+--jun2025 added quite more -nq -sq -eq 
 
 ---------------------------------------------------------------------------------------------------------------------
 procedure $createwildlist
@@ -396,6 +396,23 @@ end function
 
 
 
+--------------------------------------------------------
+proc $getfametest --test to see if database is opened in read mode access
+argument fbase 
+
+$defaults
+
+local scalar mpath:string = "$HOME/.GetFAME/"
+local scalar mfile:string = "getfametest.json"
+local scalar mpathfile:string =  mpath+mfile
+
+$open_html_file mpathfile
+$openbase fbase
+$writesuccess "OpenReadMode", fbase
+$close_html_file
+$exitfame
+end proc
+-----------------------------------------------------------------------------
 
 
 -----------------------------getfame series wildcard ----------------------------
@@ -589,7 +606,32 @@ $exitfame
 
 end proc
 
--------------------still in use ----------------------
+-------------------still in use for startup before getfame starts.. ----------------------
+
+
+----------------------just write short ok if database is opened -- called by one datae at a time..----------
+
+procedure $writesuccess
+argument msgtype, mymsg
+width 30000
+local scalar myday:string = today ("<FYEAR>-<MZ>-<DZ>")
+
+write "{" + quote+msgtype+quote+": {"  to OUTFILE
+write quote+"Database"+quote+":"+quote+mymsg+quote + "," to OUTFILE
+write quote+"Openas"+quote+":"+quote+@open.db+quote + "," to OUTFILE
+write quote+"Date"+quote+":"+quote+myday +"T"+now+quote to OUTFILE
+
+write " } }"  to OUTFILE
+
+end proc
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
 
 -------------------debug  use ----------------------
 procedure $debug
@@ -699,7 +741,7 @@ local scalar mynow :string = string(datefmt(created(start_time,secondly),"<YEAR>
 
 try
 write "[{"+quote+"GetFAME_Json_Api" +quote+": "+ quote+"Erik.Soberg@ssb.no" + +quote+","  to OUTFILE
-write quote+"Version" +quote+": "+ quote+"Oslo-20250619" + quote+","  to OUTFILE
+write quote+"Version" +quote+": "+ quote+"Oslo-20250624" + quote+","  to OUTFILE
 
 write quote+"Executed" +quote+": "+ quote+ + mynow +quote+","  to OUTFILE
 write quote+"Famever"+quote+": "+quote+ string(@release)+quote+","  to OUTFILE
@@ -838,11 +880,6 @@ end function
 
 
 --Eof
-
-
-
-
-
 
 
 
