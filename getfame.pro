@@ -1,10 +1,10 @@
 ----------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------
---ERIK Summer 2024 / 2025 erik.soberg@ssb.no / eriksoeb@gmail.com       
---Programmed in FAME 4GL
+--ERIK Summer 2025 erik.soberg@ssb.no / eriksoeb@gmail.com       
+--Programmed
 ---------------------------------------------------------------------------------------------------------------------
---jul2024 init version with json for jupiterlab R Python 
---sep2024 takes fame argument, such as freq a, convert on; deci 1 semikolon separated in double quotes
+--jul2025 init version with json for jupiterlab R Python 
+--sep2025 takes fame argument, such as freq a, convert on; deci 1 semikolon separated in double quotes
 --oct 2024 can take comma separated list of wildcards
 
 --dec2024 can open several database comma separated
