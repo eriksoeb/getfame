@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Erik Soeberg creates json file with universal epoch date for comparisons and charting in tools like highchart javascript
-#June/July 2024/2025
+#June/July 2024/2025.
 
 #location of program is the place the system getfame software is located
 #setting to same folder as where the getfame script is:
