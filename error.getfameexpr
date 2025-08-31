@@ -1,5 +1,5 @@
 { "error":{ 
- "getfameerror":"Invalid number of arguments" ,
+ "getfameerror":"Invalid number of arguments." ,
  "code":"400" ,
  "example": [{ 
  "example0":"use double quotes when having more databases separated with commas, or fame argument by semicolon, or fameexpression with special char " , 
