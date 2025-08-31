@@ -2,8 +2,6 @@
 #get fameexpressions insode R, and plot the expressions
 #using public fornavn.db as sample
 
-
-
 # Load required libraries
 library(jsonlite)
 library(dplyr)
