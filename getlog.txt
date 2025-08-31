@@ -1,11 +1,5 @@
---sample log - can be stored a different place than program, can observe potential slow things. and strange calls / arguments
-GETFAMESERIES3; rsb; sl-fame-1.ssb.no; 20250527T10:14:59; /ssb/bruker/refertid/data/kpi_publ.db; ?total?;;Sec:0.881
-GETFAMESERIES3; rsb; sl-fame-1.ssb.no; 20250527T10:15:20; /ssb/bruker/refertid/data/kpi_publ.db; ?total?;date 2025;Sec:0.021
-GETFAMESERIES3; rsb; sl-fame-1.ssb.no; 20250527T10:15:37; /ssb/bruker/refertid/data/kpi_publ.db; ?total?ipr;date 2025;Sec:0.007
-GETFAMEEXPR3; rsb; sl-fame-1.ssb.no; 20250527T10:16:45; /ssb/bruker/refertid/data/kpi_publ.db; pct(total.ipr);date 2025;Sec:0.001
-GETFAMEEXPR3; rsb; sl-fame-1.ssb.no; 20250527T10:17:00; /ssb/bruker/refertid/data/kpi_publ.db; mave(pct(total.ipr));date 2025;Sec:0.004
-GETFAMEEXPR3; rsb; sl-fame-1.ssb.no; 20250527T10:17:46; /ssb/bruker/refertid/data/kpi_publ.db; mave(pct(total.ipr));date 2025 to 2026;Sec:0.003
-GETFAMEEXPR3; rsb; sl-fame-1.ssb.no; 20250527T10:18:10; /ssb/bruker/refertid/data/kpi_publ.db; mave(pct(total.ipr),3);date 2025 to 2026;Sec:0.003
-GETFAMEEXPR3; rsb; sl-fame-1.ssb.no; 20250527T10:23:37; /ssb/bruker/refertid/data/kpi_publ.db; mave(pct(total.ipr),3);date 2025 to 2026;Sec:0.004
-GETFAMEEXPR3; rsb; sl-fame-1.ssb.no; 20250527T10:23:50; /ssb/bruker/refertid/data/kpi_publ.db; mave(pct(total.ipr),3);;Sec:0.073
-GETFAMEEXPR3; rsb; sl-fame-1.ssb.no; 20250527T10:32:48; /ssb/bruker/refertid/data/kpi_publ.db; mave(pct(total.ipr),3);;Sec:0.07
+--sample log - can be stored a different place than program, can observe potential slow things. and strange calls / arguments  TBC
+GETFAMESERIES; rsb; sl-fame-1.ssb.no; 20250527T10:15:37; /ssb/bruker/refertid/data/kpi_publ.db; ?total?ipr;date 2025;Sec:0.007
+GETFAMEEXPR; rsb; sl-fame-1.ssb.no; 20250527T10:16:45; /ssb/bruker/refertid/data/kpi_publ.db; pct(total.ipr);date 2025;Sec:0.001
+GETFAMEEXPR; rsb; sl-fame-1.ssb.no; 20250527T10:23:50; /ssb/bruker/refertid/data/kpi_publ.db; mave(pct(total.ipr),3);;Sec:0.073
+GETFAMEEXPR; rsb; sl-fame-1.ssb.no; 20250527T10:32:48; /ssb/bruker/refertid/data/kpi_publ.db; mave(pct(total.ipr),12);;Sec:0.07
