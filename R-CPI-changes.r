@@ -6,7 +6,6 @@ library(ggplot2)
 library(scales)
 library(lubridate)
 
-
 famebase <- "$REFERTID/data/kpi_publ.db"
 famedato <- "freq m; date 2005 to *"
 series_list <- c("pct(convert(total.ipr,ann,con,end))", 
@@ -27,14 +26,12 @@ for (famesoek in series_list) {
     # Execute the command and capture the output
     output <- system(command, intern = TRUE, ignore.stderr = FALSE)
     
-    
     # Get the HOME environment variable
     home_dir <- Sys.getenv("HOME")
 
     # Construct the full path using the home directory
     json_file_path <- file.path(home_dir, ".GetFAME/getfameexpr.json")
-    
-   
+       
     # Read the JSON file
     json_data <- fromJSON(json_file_path)
      
