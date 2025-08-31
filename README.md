@@ -3,7 +3,7 @@ API, getfame for exporting fame data as json for further use and analysis
 Use the API to get one or more series from a Fame database, into your favorite programming language such as Python, javascript, R other..
 Using getfame -e fameexpressions you can evaluate series-expressions, converting, summing and take use of all the functionality and power FAME offers. 
 ### Easy to parse and read. Custom functions can be used from getfameexpr getfame -e
-#### getfame -e can be used with custom functions inside functions.pro ie common basis year: cb(seriesname,yyyy)
+#### getfame -e can be used with custom functions inside functions.pro ie common basis year: cb(seriesname, yyyy)
 
 ## install /test
 ```
