@@ -1,5 +1,5 @@
 { "error":{ 
- "getfameerror":"Invalid number of arguments" ,
+ "getfameerror":"Invalid number of arguments." ,
  "code":"400" ,
  "example": [{ 
  "example0":"use double quotes when having more databases or wildcards separated with commas" , 
