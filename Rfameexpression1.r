@@ -1,7 +1,7 @@
 #R pRogram executed from jupiteRlab
 #chaRting one fameexpRession
 #can pRobably be improved by u ???
-#eRik Oct 2024 - jun 2025
+#eRik  - sep 2025
 
 # Load required libraries
 library(jsonlite)
