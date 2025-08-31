@@ -1,5 +1,5 @@
 #sample python program that takes some open fame data and plot it using json epoch
-#Jimmy & Erik 2024-2025 ; - executes from jupiterlab
+#Jimmy & Erik 2025 ; - executes from jupiterlab
 #pysample.ipynb
 
 
