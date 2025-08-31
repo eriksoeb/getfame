@@ -9,7 +9,7 @@ jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfame -n $REF
 
 [{"GetFameJsonApi": "ErikS",
 "ApiVersion": "20240721",
-"Executed": "24-Jul-24 19:09:49",
+"Executed": "24-Jul-25 19:09:49",
 "Famever": "11.53",
 "Database": "/ssb/bruker/refertid/data/fornavn.db",
 "Wildcard": "?ERIK?",
@@ -37,7 +37,7 @@ sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e $REFERTID/data/fornavn.db  "
 
 [{"GetFameJsonApi": "ErikS",
 "ApiVersion": "20240721",
-"Executed": "24-Jul-24 19:12:00",
+"Executed": "24-Jul-25 19:12:00",
 "Famever": "11.53",
 "Database": "/ssb/bruker/refertid/data/fornavn.db",
 "Series": [  
