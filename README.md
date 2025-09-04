@@ -2,14 +2,14 @@
 API, getfame for exporting fame data as json with epoch dates for further use and analysis.
 Use the API to get one or more series from a Fame database, into your favorite programming language such as Python, javascript, R other..
 Using getfame -e fameexpressions you can evaluate series-expressions, converting, summing and take use of all the functionality and power FAME offers. 
-### Easy to parse and read. Custom functions can be used from getfameexpr getfame -e
-#### getfame -e can be used with custom functions inside functions.pro ie common basis year: cb(seriesname, yyyy)
+### Easy to parse and read. Ready to use with time, value touplets. 
+#### getfame -e can be used with FAME functions and or custom FAME functions defined in functions.pro ie common basis year: cb(seriesname, yyyy)
 
 ## install /test
 ```
 1. Create a directory mkdir api ie ../../../api where the application and files can be stored
-2. copy all files to this folder first time.
-3. start FAME and compile the 2 .pro files: getfame and functions
+2. Copy all files to this folder first time.
+3. Start FAME and compile the 2 .pro files: getfame and functions
 4. All users should have (rx) access to files in this folder) If log file stored here users need w access to common log file
 5. getfame needs to be in PATH or you need to prefix with the path when executing
 6. Test to execute ie getfame-n from a xterm before jupiterlab or other to get better control errormessage
@@ -18,12 +18,11 @@ Using getfame -e fameexpressions you can evaluate series-expressions, converting
 ```
 
 >[!NOTE]
->Idea: The 3 IDENTICAL scripts ( could/should have been written as one ) each produce a getfameexpr.json, getfamenames.json and getfameseries.json for external programs to have the possibility to read and connect the metadata from getfame -n,  and getfame -s and getfame -e in one request. 
+>Idea: getfame n, getfame -s and getfame -e creates getfamenames.json, getfameseries.json and getfameexpr.json in your $HOME directory for other tools to read and combine the metadata from getfame -n,  with dataobservations from and getfame -s or getfame -e. However be aware that most often it requires fewer lines of code to make a chart in FAME compared to all other langues when the data already is stores inside FAME.
 
 
 >[!NOTE]
 >Use double quotes around parameters when special characters is in use as the parameters ```getfame -e "mydb.db" "pct(myseries.A)" ```
-
 
 
 >[!NOTE]
@@ -34,7 +33,7 @@ Using getfame -e fameexpressions you can evaluate series-expressions, converting
 > 1)getfamenames == getfame -n, 2)getfameseries == getfame -s  & 3)getfameexpr == getfame -e
 
 
-### 1. getfamenames / getfame -n:  wildcard/objectname search for famenames -> gets metadata info ( no date param)
+### 1. getfame -n:  wildcard/objectname search for famenames -> gets metadata info ( no date param)
 
 ```
 xterm :   getfame -n $REFERTID/data/fornavn.db  "ERIK"
@@ -48,7 +47,7 @@ jupiterlab :  !ssh sl-fame-1.ssb.no 'getfamenames $REFERTID/data/fornavn.db "?ER
 ```
 [{"GetFameJsonApi": "ErikS",
 "ApiVersion": "20240721",
-"Executed": "24-Jul-24 19:09:49",
+"Executed": "24-Jul-25 19:09:49",
 "Famever": "11.53",
 "Database": "/ssb/bruker/refertid/data/fornavn.db",
 "Wildcard": "?ERIK?",
@@ -62,7 +61,7 @@ jupiterlab :  !ssh sl-fame-1.ssb.no 'getfamenames $REFERTID/data/fornavn.db "?ER
 }]
 ```
 
-### 2. getfameseries  / getfame -s -> gets observations for >=1 series/wildcards. No functions.  Convert will use observed settings from FAME definition
+### 2. getfame -s -> gets observations for >=1 series/wildcards. No functions.  Convert will use observed settings from FAME definition
 ```
 xterm:      getfame -s $REFERTID/data/kpi_publ.db "total.ipr" 
 xterm:      getfame -s  /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "date 2024"
@@ -75,8 +74,8 @@ jupiterlab: !ssh sl-fame-1.ssb.no 'getfame -s $REFERTID/data/fornavn.db "ERIK?" 
 => sample getfameseries json result:
   ```
 [{"GetFameJsonApi": "ErikS",
-"ApiVersion": "20240721",
-"Executed": "24-Jul-24 19:27:46",
+"ApiVersion": "20250721",
+"Executed": "24-Jul-25 19:27:46",
 "Famever": "11.53",
 "Database": "/ssb/bruker/refertid/data/fornavn.db",
 "Series": [  
@@ -121,7 +120,7 @@ jupiterlab: !ssh sl-fame-1.ssb.no 'getfame -s $REFERTID/data/fornavn.db "ERIK?" 
 ```
 
 
-### 3. getfameexpr / getfame -e:  ->gets observations, series-expression as a result, based on a fame expression. recommended. Full flexibility for converting.
+### 3. getfame -e:  ->gets observations, series-expression as a result, based on a fame expression. recommended. Full flexibility for converting.
 ```
 xterm:          getfame -e $REFERTID/data/fornavn.db  "ERIK"
 xterm:          getfame -e  $REFERTID/data/fornavn.db  "mave(ERIK,2)" "date 2000 to 2010"
@@ -137,7 +136,7 @@ jupiterlab :    !ssh sl-fame-1.ssb.no 'getfame -e $REFERTID/data/fornavn.db "pct
  ```
 [{"GetFameJsonApi": "ErikS",
 "ApiVersion": "20240721",
-"Executed": "24-Jul-24 19:12:00",
+"Executed": "24-Jul-25 19:12:00",
 "Famever": "11.53",
 "Database": "/ssb/bruker/refertid/data/fornavn.db",
 "Series": [  
