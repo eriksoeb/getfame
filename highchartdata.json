@@ -1,0 +1,58 @@
+myData =
+[{"GetFAME_Json_Api": "Erik.Soberg@ssb.no",
+"Version": "Oslo-20250624",
+"Executed": "2025-09-04T14:30:34",
+"Famever": "11.53",
+"Database": "/ssb/bruker/refertid/data/kpi_publ.db",
+"Openas": "KPI_PUBL",
+"Result": "$HOME/.GetFAME/getfameseries.json",
+"Wildcard": "TOTAL.IPR.?",
+"Found": 3,
+"Notfound": 0,
+"Missing": "",
+"Series": [  
+{"Name": "KPI_PUBL'TOTAL.IPR.A",
+"Desc": "Totalindeks_indeks annual",
+"Daterange": "2024",
+"Frequency": "ANNUAL",
+"Observations":[
+{"Date":"2024-01-01", "Value":133.6, "Epo":[1704067200000, 133.6]}
+]  }     ,
+{"Name": "KPI_PUBL'TOTAL.IPR.G",
+"Desc": "Totalindeks_Trend",
+"Daterange": "2024",
+"Frequency": "MONTHLY",
+"Observations":[
+{"Date":"2024-01-01", "Value":132.5, "Epo":[1704067200000, 132.5]},
+{"Date":"2024-02-01", "Value":132.8, "Epo":[1706745600000, 132.8]},
+{"Date":"2024-03-01", "Value":133, "Epo":[1709251200000, 133]},
+{"Date":"2024-04-01", "Value":133.2, "Epo":[1711929600000, 133.2]},
+{"Date":"2024-05-01", "Value":133.3, "Epo":[1714521600000, 133.3]},
+{"Date":"2024-06-01", "Value":133.4, "Epo":[1717200000000, 133.4]},
+{"Date":"2024-07-01", "Value":133.5, "Epo":[1719792000000, 133.5]},
+{"Date":"2024-08-01", "Value":133.7, "Epo":[1722470400000, 133.7]},
+{"Date":"2024-09-01", "Value":134, "Epo":[1725148800000, 134]},
+{"Date":"2024-10-01", "Value":134.3, "Epo":[1727740800000, 134.3]},
+{"Date":"2024-11-01", "Value":134.8, "Epo":[1730419200000, 134.8]},
+{"Date":"2024-12-01", "Value":135.2, "Epo":[1733011200000, 135.2]}
+]  }     ,
+{"Name": "KPI_PUBL'TOTAL.IPR.S",
+"Desc": "Totalindeks_Sesongjustert",
+"Daterange": "2024",
+"Frequency": "MONTHLY",
+"Observations":[
+{"Date":"2024-01-01", "Value":132.6, "Epo":[1704067200000, 132.6]},
+{"Date":"2024-02-01", "Value":132.7, "Epo":[1706745600000, 132.7]},
+{"Date":"2024-03-01", "Value":132.9, "Epo":[1709251200000, 132.9]},
+{"Date":"2024-04-01", "Value":133.3, "Epo":[1711929600000, 133.3]},
+{"Date":"2024-05-01", "Value":133.2, "Epo":[1714521600000, 133.2]},
+{"Date":"2024-06-01", "Value":133.4, "Epo":[1717200000000, 133.4]},
+{"Date":"2024-07-01", "Value":133.6, "Epo":[1719792000000, 133.6]},
+{"Date":"2024-08-01", "Value":133.7, "Epo":[1722470400000, 133.7]},
+{"Date":"2024-09-01", "Value":133.8, "Epo":[1725148800000, 133.8]},
+{"Date":"2024-10-01", "Value":134.4, "Epo":[1727740800000, 134.4]},
+{"Date":"2024-11-01", "Value":134.8, "Epo":[1730419200000, 134.8]},
+{"Date":"2024-12-01", "Value":135.1, "Epo":[1733011200000, 135.1]}
+]  }     ],  
+"Elapsed_time_in_seconds":0.099
+  } ] 
