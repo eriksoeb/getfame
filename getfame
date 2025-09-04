@@ -1,7 +1,30 @@
+
+
 #!/bin/bash
 
 #Erik Soeberg creates json file with universal epoch date for comparisons and charting in tools like highchart javascript
-#June/July 2024/2025.
+#June/July/Sept 2025
+
+
+
+
+#if executing without these variables ther is a problem, must have his and access to the area where code is
+#
+if [ -z "$REFERTID" ]; then
+	export REFERTID="/ssb/bruker/refertid"
+fi
+
+if [ -z "$FAME" ]; then
+	export FAME="/opt/fame"
+fi
+
+
+if [ -z "$HOST" ]; then
+	export HOST="harkhost"
+fi
+
+
+
 
 #location of program is the place the system getfame software is located
 #setting to same folder as where the getfame script is:
@@ -13,8 +36,8 @@ show_usage() {
   echo "first param to getfame must be -n -s or -e"
   echo "getfame -n, getfame -s or expresions getfame -e"
   echo 'example : getfame -n $REFERTID/data/kpi_publ.db "total?" '
-  echo 'example : getfame -s $REFERTID/data/kpi_publ.db "total?" "date 2025;deci1" '
-  echo 'example : getfame -e $REFERTID/data/kpi_publ.db "pct(total.ipr)" "date 2024 to *; deci1" '
+  echo 'example : getfame -s $REFERTID/data/kpi_publ.db "total?" "date 2025;deci 1" '
+  echo 'example : getfame -e $REFERTID/data/kpi_publ.db "pct(total.ipr)" "date 2024 to *; deci 1" '
   echo "See  $GETFAMESYS/readme.txt or getfame -h for more samples"
   echo "PS: getfame -t test one given database read access"
   echo "PS: getfame -nq getfame -sq getfame -eq runs silent QUITE mode "
@@ -58,7 +81,7 @@ fi
 
 #work without log not required
 #if log have it where the sueres have write access to the file
-#export GETFAMELOG="$REFERTID/system/myfame/getlog.txt"
+export GETFAMELOG="$REFERTID/system/myfame/getlog.txt"
 
 #lagrer resultatfil, samme som vises i skjerm terminal output:
 if test ! -d $HOME/.GetFAME; then
@@ -164,7 +187,18 @@ $FAME/fame i $HOME/.GetFAME/fame.inp  &>/dev/null
 
 #if exist only if success no output to screen if queiet mode
 #if [[ "$SWITCH" == "-s" || "$SWITCH" == "-sq" ]]; then
+#
+#
+  
 if [[ -s $HOME/.GetFAME/$MNAME.json  ]]; then
+
+ if [[ "$MNAME" == "getfameseries" ]] || [[ "$MNAME" == "getfameexpr" ]]; then
+  #echo "hello I am making a highchartdata file for you as well"
+{
+echo "myData ="
+cat "$HOME/.GetFAME/$MNAME.json"
+} > "$HOME/.GetFAME/highchartdata.json"
+fi
 
 case "$SWITCH" in 
  -n|-e|-s|-t)
@@ -178,5 +212,6 @@ fi
 rm -f  $HOME/.GetFAME/fame.inp
 
 #end of script
+
 
 
