@@ -1,0 +1,62 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Highcharts Example</title>
+  <script src="https://code.highcharts.com/highcharts.js"></script>
+  <script src="https://code.highcharts.com/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/modules/export-data.js"></script>
+  <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+  <script src="https://code.highcharts.com/modules/data.js"></script>
+  <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+   
+  <script src="highchartdata.json"></script>
+</head>
+<body>
+  <div id="container" style="height: 500px; min-width: 600px"></div>
+
+  <script>
+  
+  
+  
+Highcharts.setOptions({
+		
+	 lang: {
+        decimalPoint: '.',       // or ',' if you prefer
+        thousandsSep: ' ',       // or ',' for US style	
+    },		
+	});
+	
+
+    const seriesData = myData[0].Series.map(s => ({
+      name: s.Desc || s.Name,
+      data: s.Observations.map(o => o.Epo)
+    }));
+
+    Highcharts.chart('container', {
+      chart: { type: 'spline',  zoomType: 'x', },
+      title: { text: 'getfame series' },
+ 
+	  
+	  xAxis: {
+    type: 'datetime',
+    },
+	  	   
+      yAxis: { title: { text: 'Value' } },
+	  
+	  
+      tooltip: { xDateFormat: '%Y-%m-%d', shared: true },
+      series: seriesData
+    });
+  </script>
+</body>
+</html>
+
+  
+
+  
+  
+  
+  
