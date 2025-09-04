@@ -1,5 +1,5 @@
 # getfame-json-api
-API, getfame for exporting fame data as json for further use and analysis
+API, getfame for exporting fame data as json with epoch dates for further use and analysis.
 Use the API to get one or more series from a Fame database, into your favorite programming language such as Python, javascript, R other..
 Using getfame -e fameexpressions you can evaluate series-expressions, converting, summing and take use of all the functionality and power FAME offers. 
 ### Easy to parse and read. Custom functions can be used from getfameexpr getfame -e
@@ -12,11 +12,9 @@ Using getfame -e fameexpressions you can evaluate series-expressions, converting
 3. start FAME and compile the 2 .pro files: getfame and functions
 4. All users should have (rx) access to files in this folder) If log file stored here users need w access to common log file
 5. getfame needs to be in PATH or you need to prefix with the path when executing
-5b.Test to execute ie getfame-n  from a xterm before jupiterlab or other to get better control errormessage
-5c.New users may use getfame -n getfame -s and getfame -e instead of the 3 identical scripts getfamenames getfamenames getfameexpr as they are to be phased out
-6. Explore the directory $HOME/.GetFAME for error messages and output (this will also be listed as part of the execution)
-7. The new getfame script isd different from getfamenames, getfameseries & getfameexpr as it takes different num of arguments.
-8. Use getfame -n getfame -s and the most advanced getfame -e 
+6.Test to execute ie getfame-n  from a xterm before jupiterlab or other to get better control errormessage
+7. Explore the directory $HOME/.GetFAME for error messages and output (this will also be listed as part of the execution)
+8. Use getfame -n and getfame -s, but the most advanced flexible and timeintellegente is getfame -e 
 ```
 
 >[!NOTE]
