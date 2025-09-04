@@ -1,10 +1,12 @@
+
+
 ----------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------------------
 --ERIK Summer 2025 erik.soberg@ssb.no / eriksoeb@gmail.com       
---Programmed
+--Programmed in FAME 4GL
 ---------------------------------------------------------------------------------------------------------------------
---jul2025 init version with json for jupiterlab R Python 
---sep2025 takes fame argument, such as freq a, convert on; deci 1 semikolon separated in double quotes
+--jul2024 init version with json for jupiterlab R Python 
+--sep2024 takes fame argument, such as freq a, convert on; deci 1 semikolon separated in double quotes
 --oct 2024 can take comma separated list of wildcards
 
 --dec2024 can open several database comma separated
@@ -19,6 +21,9 @@
 --jun2025 writerrror back as exit procedure if errors in script
 --jun2025 added getfame -h and getfame -t to test database 
 --jun2025 added quite more -nq -sq -eq 
+--sep2025 duplicates removed for repeating wildcards
+--sep2025 problem with ?? double question mark as wildcard removed
+--sep2025 sample date file for highcharts created for getfameseries and getfameexpr 
 
 ---------------------------------------------------------------------------------------------------------------------
 procedure $createwildlist
@@ -49,11 +54,15 @@ loop while not missing(location(reststr, ",")) and reststr NE ","
 	
 
 set curwild =   trim(substring(reststr,1,location(reststr,",")-1))
-if  curwild NE ""  --duplicate commas
+--if  curwild NE ""  --duplicate commas
+if  (curwild NE "" AND curwild NE "??")  --duplicate commas or memory fault
 
         set argcase[myledd] =  curwild
 	
         set myledd = myledd+1
+
+
+
 end if
 	set reststr=substring(reststr, location(reststr,",")+1, length(reststr))
 
@@ -84,7 +93,13 @@ end if
 loop for w=1 to lastvalue( argcase)
 
 
-		if (length (wildlist(id(mbase),argcase[w])) EQ 0)
+		if ((trim(argcase[w])) EQ "??")
+
+			set missings = missings +argcase[w]+" "
+			set num_missing = num_missing +1
+
+
+		else if (length (wildlist(id(mbase),argcase[w])) EQ 0)
 			set missings = missings +argcase[w]+" "
 			set num_missing = num_missing +1
 		end if 
@@ -112,7 +127,8 @@ end loop --base(r)
 --$debug "wildlist loops done"
 --set myliste = alpha(unique(NL(finnescase)))
 --set mycase <case 1 to * > = MERGE(finnescase)
--/mycase  = MERGE(finnescase)
+--/mycase  = MERGE(finnescase)
+-/mycase  = MERGE(sortdata(finnescase))
 
 --$debug "wildlist merge done mcnti: " +string(mcount)
 --$debug "wildlist mum1: " + finnescase[1] 
@@ -139,6 +155,7 @@ argument fbase, wild,fameargnotused
 store work; over on
 channel warning none
 close all
+$defaults
 
 
 --$debug "getfamenames debug starts herei ------------------------------------------"+ now
@@ -256,7 +273,7 @@ end if
 
 end loop
 
-$log "getfamenames", fbase, wild , ""
+
 
 otherwise 
 $writeerror_clean "-- "+lasterror + " !", fbase,"NC"
@@ -279,7 +296,7 @@ proc $defaults
 close all
 width 30000
 store work; over on
-channel warning none
+channel warning none;
 ignore on
 deci auto
 end proc
@@ -355,7 +372,7 @@ $norange curve2,getfame_ser
 end if
 
 $footer
-$log "getfameexpr", fbase, curve , famearg
+
 
 $close_html_file
 $exitfame
@@ -421,16 +438,17 @@ proc $getfameseries
 argument fbase,  wild , famearg
 
 $defaults
-
-
 local scalar mpath:string = "$HOME/.GetFAME/"
 local scalar mfile:string = "getfameseries.json"
+local scalar mpathfile:string =  mpath+mfile
 --not to be renames as script assume
 
-local scalar mpathfile:string =  mpath+mfile
+
 
 $open_html_file mpathfile
 $openbase fbase
+
+
 
 --tbc
 image date value annual "<FYEAR>-01-01"
@@ -489,6 +507,18 @@ write quote+"Series"+quote+": [  " to OUTFILE
 
 set mysname =  "floopsname" 
 
+
+
+--bedre meldig om ikke noe treff på wildcard
+if missing(lastvalue(mycase))
+$writeerror_clean  "No objects found for: '"+wild+"'" , fbase, mpathfile
+$close_html_file
+$exitfame
+
+end if
+
+
+
 loop for s =1 to lastvalue(mycase)  
 	set mycount = mycount +1
 
@@ -525,7 +555,7 @@ $exitfame
 
 end try 
 $footer
-$log "getfameseries", fbase, wild, famearg
+
 $close_html_file
 $exitfame
 end proc
@@ -741,7 +771,7 @@ local scalar mynow :string = string(datefmt(created(start_time,secondly),"<YEAR>
 
 try
 write "[{"+quote+"GetFAME_Json_Api" +quote+": "+ quote+"Erik.Soberg@ssb.no" + +quote+","  to OUTFILE
-write quote+"Version" +quote+": "+ quote+"Oslo-20250624" + quote+","  to OUTFILE
+write quote+"Version" +quote+": "+ quote+"Oslo-20251004" + quote+","  to OUTFILE
 
 write quote+"Executed" +quote+": "+ quote+ + mynow +quote+","  to OUTFILE
 write quote+"Famever"+quote+": "+quote+ string(@release)+quote+","  to OUTFILE
@@ -820,17 +850,7 @@ end proc
 -------------------------------------------------------------------
 proc $log
 argument modul, fbase, wildcurve, famearg
-
-try
-local scalar mylogstr :string = upper(modul)+"; "+getenv("USER") +"; "+getenv("HOST")+ "; "+today("<YEAR><MZ><DZ>T<HHZ>:<MMZ>:<SSZ>")  + "; "&&
-+fbase+ "; " +wildcurve+ ";" +famearg+";Sec:" + string((stop_time-start_time)/1000)
-
-local scalar filename :string = getenv("GETFAMELOG")
-open <kind text; acc append >file (filename) as LOGFILE
-write mylogstr to LOGFILE
-close !LOGFILE
-otherwise
-end try
+--tbc
 end proc
 -------------------------------------------------------------------
 
@@ -880,6 +900,9 @@ end function
 
 
 --Eof
+
+
+
 
 
 
