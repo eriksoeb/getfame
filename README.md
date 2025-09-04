@@ -12,19 +12,17 @@ Using getfame -e fameexpressions you can evaluate series-expressions, converting
 3. start FAME and compile the 2 .pro files: getfame and functions
 4. All users should have (rx) access to files in this folder) If log file stored here users need w access to common log file
 5. getfame needs to be in PATH or you need to prefix with the path when executing
-6.Test to execute ie getfame-n  from a xterm before jupiterlab or other to get better control errormessage
+6. Test to execute ie getfame-n from a xterm before jupiterlab or other to get better control errormessage
 7. Explore the directory $HOME/.GetFAME for error messages and output (this will also be listed as part of the execution)
 8. Use getfame -n and getfame -s, but the most advanced flexible and timeintellegente is getfame -e 
 ```
 
 >[!NOTE]
->Idea: The 3 IDENTICAL scripts ( could/should have been written as one ) each produce a getfameexpr.json, getfamenames.json and getfameseries.json for external programs to have the possibility to read and connect the metadata from getfamenames and getfameseries in one qry /map. The scripts are identical.
->The script getfame can be used instead in attition to the 3 identical scripts, then use getfame -n getfame -s getfame -e
+>Idea: The 3 IDENTICAL scripts ( could/should have been written as one ) each produce a getfameexpr.json, getfamenames.json and getfameseries.json for external programs to have the possibility to read and connect the metadata from getfame -n,  and getfame -s and getfame -e in one request. 
 
 
 >[!NOTE]
->Use double quotes around parameters when special characters is in use as the parameters ```getfameexpr "mydb.db" "pct(myseries.A)" ``` which is similar to ```getfame -e "mydb.db" "pct(myseries.A)" ```
-
+>Use double quotes around parameters when special characters is in use as the parameters ```getfame -e "mydb.db" "pct(myseries.A)" ```
 
 
 
