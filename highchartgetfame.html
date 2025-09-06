@@ -1,9 +1,31 @@
 
 
-
 <!DOCTYPE html>
 <html>
 <head>
+
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.mobile-container {
+  height: 100%;
+}
+
+#container {
+  width: 100%;
+  height: 92%;   /* now this will be relative to parent */
+  margin: 0 auto;
+}
+</style>
+
+
+
+
+
   <title>Highcharts Example</title>
   <script src="https://code.highcharts.com/highcharts.js"></script>
   <script src="https://code.highcharts.com/modules/exporting.js"></script>
@@ -15,7 +37,14 @@
   <script src="highchartdata.json"></script>
 </head>
 <body>
-  <div id="container" style="height: 50%; min-width: 30%"></div>
+
+   
+  
+  <div class="mobile-container">
+  <div id="container"></div>
+</div>
+  
+  
 
   <script>
   
@@ -36,8 +65,8 @@ Highcharts.setOptions({
     }));
 
     Highcharts.chart('container', {
-      chart: { type: 'spline',  zoomType: 'x', },
-      title: { text: 'getfame series from highcharts' },
+      chart: { type: 'spline',  zoomType: 'x'},
+      title: { text: 'getfame series seen from highcharts' },
 	  subtitle: { text: 'json datafile created by getfame' },
  
 	  
