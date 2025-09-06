@@ -12,7 +12,7 @@ myData =
 "Missing": "",
 "Series": [  
 {"Name": "KPI_PUBL'TOTAL.IPR.A",
-"Desc": "Totalindeks_indeks pris_årsgjsn",
+"Desc": "Totalindex yearly avg",
 "Daterange": "2020 TO *",
 "Frequency": "ANNUAL",
 "Observations":[
@@ -23,7 +23,7 @@ myData =
 {"Date":"2024-01-01", "Value":133.6, "Epo":[1704067200000, 133.6]}
 ]  }     ,
 {"Name": "KPI_PUBL'TOTAL.IPR.G",
-"Desc": "Totalindeks_Trend(prog1)",
+"Desc": "Totalindex Trend",
 "Daterange": "2020 TO *",
 "Frequency": "MONTHLY",
 "Observations":[
@@ -96,7 +96,7 @@ myData =
 {"Date":"2025-07-01", "Value":138, "Epo":[1751328000000, 138]}
 ]  }     ,
 {"Name": "KPI_PUBL'TOTAL.IPR.S",
-"Desc": "Totalindeks_Sesongjustert(prog1)",
+"Desc": "Totalindex Seasonal adjusted",
 "Daterange": "2020 TO *",
 "Frequency": "MONTHLY",
 "Observations":[

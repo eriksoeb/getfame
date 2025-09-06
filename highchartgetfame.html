@@ -15,7 +15,7 @@
   <script src="highchartdata.json"></script>
 </head>
 <body>
-  <div id="container" style="height: 500px; min-width: 600px"></div>
+  <div id="container" style="height: 50%; min-width: 30%"></div>
 
   <script>
   
@@ -37,15 +37,39 @@ Highcharts.setOptions({
 
     Highcharts.chart('container', {
       chart: { type: 'spline',  zoomType: 'x', },
-      title: { text: 'getfame series' },
+      title: { text: 'getfame series from highcharts' },
+	  subtitle: { text: 'json datafile created by getfame' },
  
 	  
 	  xAxis: {
     type: 'datetime',
     },
 	  	   
-      yAxis: { title: { text: 'Value' } },
+      yAxis: { title: { text: 'cpi index values' } },
 	  
+	   colors: [
+    '#4E79A7', // Ocean Blue
+    '#F28E2B', // Sunset Orange
+    '#76B7B2'  // Mint Green
+  ],
+	  
+	  		  
+plotOptions: {
+series: {          
+            lineWidth: 4,
+               states: {
+                      inactive: {
+                        opacity: 1
+                      }
+                    },
+pointPlacement: 'on',
+marker: {
+      enabled: false   // <--- disables the dots
+    }
+        },
+		},
+	  
+	   
 	  
       tooltip: { xDateFormat: '%Y-%m-%d', shared: true },
       series: seriesData
