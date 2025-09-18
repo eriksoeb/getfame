@@ -1,4 +1,4 @@
-#eRik using R oct 2024
+#eRik using R sept 2025 Hack
 #get fameexpressions insode R, and plot the expressions
 #using public fornavn.db as sample
 #use of epoch
