@@ -1,11 +1,11 @@
 # getfame-json-api
-API, getfame for exporting fame data as json with epoch dates for further use and analysis.
+a generic API, getfame for exporting FAME timeseries data as json with epoch dates for further use and analysis.
 Use the API to get one or more series from a Fame database, into your favorite programming language such as Python, javascript, R other..
-Using getfame -e fameexpressions you can evaluate series-expressions, converting, summing and take use of all the functionality and power FAME offers. 
-### Easy to parse and read. Ready to use with time, value touplets. 
+Using getfame -e fameexpressions you can evaluate one ore more series-expressions, converting, summing and take use of all the functionality and power FAME offers. 
+### Easy to parse and read. Ready to use with datetime, value touplets. 
 #### getfame -e can be used with FAME functions and or custom FAME functions defined in functions.pro ie common basis year: cb(seriesname, yyyy)
 
-## install /test
+## install /test (only to be installed once on a linux server, to be used by sevaral users at the same time)
 ```
 1. Create a directory mkdir api ie ../../../api where the application and files can be stored
 2. Copy all files to this folder first time.
@@ -37,9 +37,9 @@ Using getfame -e fameexpressions you can evaluate series-expressions, converting
 
 ```
 xterm :   getfame -n $REFERTID/data/fornavn.db  "ERIK"
-xterm :   getfame -n   $REFERTID/data/fornavn.db  "?ERIK?,JIM,JAN?"
-xterm :   getfame -n $REFERTID/data/fornavn.db  "?RIK,KRISTIN,JIM,HE?"
-xterm :   getfame -n   "/ssb/bruker/refertid/data/kpi_publ.db, /ssb/bruker/refertid/data/fornavn.db"  "?T?I?" | more
+xterm :   getfame -n   $REFERTID/data/fornavn.db  "?ERIK?;JIM;JAN?"
+xterm :   getfame -n $REFERTID/data/fornavn.db  "?RIK;KRISTIN;JIM,HE?"
+xterm :   getfame -n   "/ssb/bruker/refertid/data/kpi_publ.db; /ssb/bruker/refertid/data/fornavn.db"  "?T?I?" | more
 
 jupiterlab :  !ssh sl-fame-1.ssb.no 'getfamenames $REFERTID/data/fornavn.db "?ERIK" '
 ```
@@ -66,7 +66,7 @@ jupiterlab :  !ssh sl-fame-1.ssb.no 'getfamenames $REFERTID/data/fornavn.db "?ER
 xterm:      getfame -s $REFERTID/data/kpi_publ.db "total.ipr" 
 xterm:      getfame -s  /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "date 2024"
 xterm:      getfame -s /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "freq m; date thisday(m)-5 to *""
-xterm:      getfame -s  $REFERTID/data/fornavn.db  "?ERIK,KRISTIN,JIM?}" "date 2010 to 2012"
+xterm:      getfame -s  $REFERTID/data/fornavn.db  "?ERIK;KRISTIN;JIM?}" "date 2010 to 2012"
 xterm:      getfame -s /ssb/bruker/refertid/data/fornavn.db "?JAN?" "date 2000 to 2005"
 xterm:      getfame -s  "mynames.db, /ssb/bruker/refertid/data/fornavn.db"  "JI?" "date 2000 to *; deci 2"
 jupiterlab: !ssh sl-fame-1.ssb.no 'getfame -s $REFERTID/data/fornavn.db "ERIK?" "date 2000 to *" '
