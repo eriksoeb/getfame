@@ -16,14 +16,20 @@
 --jun2025 Handeling identical seriesnames in different databases
 --and more:
 --jun2025 Handeling 2 similar databasenames if they are opened in different paths..by adding 2,3,4 to the openas names
---jun2025 Adding frequiency for series and NC for formulas using the -n getfameseriesnames option
+--jun2025 Adding frequiency for series and NC for formulas using the -n get fameseriesnames option
 --jun2025 Cleaning away old writerror procedure
 --jun2025 writerrror back as exit procedure if errors in script
 --jun2025 added getfame -h and getfame -t to test database 
 --jun2025 added quite more -nq -sq -eq 
 --sep2025 duplicates removed for repeating wildcards
 --sep2025 problem with ?? double question mark as wildcard removed
---sep2025 sample date file for highcharts created for getfameseries and getfameexpr 
+--sep2025 sample date file for highcharts created for get fameseries and getfameexpr 
+--sep2025 New error structure with errors and series not found
+--sep2025 If Formulas evaluates series not available or incorrect formulas, getfame will continue with other series and not stop
+--sep2025 Name and DB er split into different JSON fields
+--sep2025 getfame -e takes a number of expressions separated with ; semikolon "pct(total.ipr); mave(total.ipr,3)"
+--sep2025 getfame -s now ; semikolon as separator when listing a list of wildcards "sn1? ; ?.IPR; SN?ADJ.ARIMA?"
+--sep2025 sept 20 -
 
 ---------------------------------------------------------------------------------------------------------------------
 procedure $createwildlist
@@ -50,10 +56,10 @@ local scalar <over on>  myledd:numeric = 1
 
 
 
-loop while not missing(location(reststr, ",")) and reststr NE ","
+loop while not missing(location(reststr, ";")) and reststr NE ";"
 	
 
-set curwild =   trim(substring(reststr,1,location(reststr,",")-1))
+set curwild =   trim(substring(reststr,1,location(reststr,";")-1))
 --if  curwild NE ""  --duplicate commas
 if  (curwild NE "" AND curwild NE "??")  --duplicate commas or memory fault
 
@@ -64,11 +70,11 @@ if  (curwild NE "" AND curwild NE "??")  --duplicate commas or memory fault
 
 
 end if
-	set reststr=substring(reststr, location(reststr,",")+1, length(reststr))
+	set reststr=substring(reststr, location(reststr,";")+1, length(reststr))
 
 end loop
 
-if (length(reststr) GT 0 ) and (trim(reststr) NE ",")
+if (length(reststr) GT 0 ) and (trim(reststr) NE ";")
         set argcase[myledd] =  reststr
 	set reststr = "" 
 end if
@@ -92,12 +98,10 @@ end if
 --tester hele listen for valid wildcards
 loop for w=1 to lastvalue( argcase)
 
-
 		if ((trim(argcase[w])) EQ "??")
 
 			set missings = missings +argcase[w]+" "
 			set num_missing = num_missing +1
-
 
 		else if (length (wildlist(id(mbase),argcase[w])) EQ 0)
 			set missings = missings +argcase[w]+" "
@@ -130,20 +134,23 @@ end loop --base(r)
 --/mycase  = MERGE(finnescase)
 -/mycase  = MERGE(sortdata(finnescase))
 
---$debug "wildlist merge done mcnti: " +string(mcount)
---$debug "wildlist mum1: " + finnescase[1] 
 
 OTHERWISE
 --$debug "l_err:" + lasterror
 	$writeerror_clean "Ups! check for valid wildcard-list: "+wild, fbase,mpathfile+ lasterror
 	$close_html_file
 	$exitfame
+
+
+
 END TRY
 
 
 end proc ---createwildliste
 
 ----------------------------------------------------------
+
+
 
 
 
@@ -172,6 +179,9 @@ local scalar myupdated:string ="upd time"
 local scalar mydescr:string ="desc of object"
 local scalar myobs:string = "myobs" 
 local scalar myfreq:string = "myfreq" 
+--sep25
+local scalar mylastval:string = "last" 
+local scalar myfirstval:string = "first" 
 
 
 $open_html_file mpathfile
@@ -211,13 +221,6 @@ write quote+"Series"+quote+":[" to Outfile
 
 
 
-image date value annual "<FYEAR>-01-01"
-image date value monthly "<FYEAR>-<MZ>-01"
-image date value quarterly "<FYEAR>-<P>"
-image date value quarterly "<FYEAR>-<PTL>-01"
-image date value quarterly "<FYEAR>-<MZ>-01"
-
-
 replace NC "NC" 
 
 
@@ -226,6 +229,13 @@ loop for s=1 to lastvalue(mycase)  --ny
 	set mycount = mycount+1
 	set sn = mycase[s] --seriesname
 
+try
+execute "set myfirstval = datefmt(firstvalue(id(name(" +sn+ "))))"
+execute "set mylastval = datefmt(lastvalue(id(name(" +sn+ "))))"
+otherwise
+set myfirstval = "NC"
+set mylastval = "NC"
+end try
 
 execute "set myclass = class(id(name(" +sn+ ")))"
 
@@ -248,11 +258,18 @@ end if
 execute "set mycreated =  datefmt(created("+sn+",secondly), "+quote+"<YEAR>-<MZ>-<DZ>T<HHZ>:<MMZ>:<SSZ>"+quote +" )"
 execute "set myupdated =  datefmt(updated("+sn+",secondly), "+quote+"<YEAR>-<MZ>-<DZ>T<HHZ>:<MMZ>:<SSZ>"+quote +" )"
 
+
+--øæå problam norwegeian Desc
 execute "set mydescr =  descr(" +sn +")"
+--set mydescr = "" 
+--sat
 
 
 
-	write <crlf off> "{"+quote +"Name"+quote+":"+ quote + sn +quote +","        &&
+
+
+	write <crlf off> "{"+quote +"Name"+quote+":"+ quote + substring(sn,location(sn,"'")+1,length(sn)) +quote +","        &&
+	    + quote+"Db"+quote+":"+quote+ substring(sn,1,location(sn,"'")-1)   +quote +","   &&
 	    + quote+"Class"+quote+":"+quote+myclass+quote +","   &&
 	    + quote+"Observed"+quote+":"+quote+myobs+quote+","        &&
 	    + quote+"Freq"+quote+":"+quote+myfreq+quote+","        &&
@@ -264,11 +281,12 @@ execute "set mydescr =  descr(" +sn +")"
 
 
 
+
 --oif (lastvalue(myserie) NE mydate) 
 if mycount NE mylength 
 	write <crlf on> "," to OUTFILE --adder comma if not last line
-else
-	$footer
+--else
+--	$footer
 end if
 
 end loop
@@ -276,10 +294,18 @@ end loop
 
 
 otherwise 
-$writeerror_clean "-- "+lasterror + " !", fbase,"NC"
+--$writeerror_clean "-- "+lasterror + " !", fbase,"NC"
+$saveerrors lasterror
+$listerrors
+$footer
+$close_html_file
+$exitfame
+
 end try
 
 
+$listerrors
+$footer
 $close_html_file
 close all
 $exitfame
@@ -297,7 +323,27 @@ close all
 width 30000
 store work; over on
 channel warning none;
-ignore on
+ignore on;over on
+series getfame.err :string by case
+
+
+
+image date Quarterly index "<FYEAR>:<PZ>"
+image date Quarterly value "<FYEAR>:<PZ>"
+image date BiMonthly value "<FYEAR>:<PZ>"
+image date BiMonthly index "<FYEAR>:<PZ>"
+image date Monthly value "<FYEAR>:<PZ>"
+image date Monthly index "<FYEAR>:<PZ>"
+
+
+image date Annual value "<FYEAR>"
+image date value annual "<FYEAR>-01-01"
+image date value monthly "<FYEAR>-<MZ>-01"
+
+--for jimmy sep18
+image date Quarterly index "<FYEAR>:<PZ>"
+image date Quarterly value "<FYEAR>-<MZ>-01"
+
 deci auto
 end proc
 ------------------------------------------
@@ -324,67 +370,135 @@ local scalar mpath:string = "$HOME/.GetFAME/"
 local scalar mfile:string = "getfameexpr.json"
 
 local scalar mpathfile:string =  mpath+mfile
+local scalar reststr :string = (trim(curve2))
+local scalar curwild :string = ""
+local scalar myledd:numeric = 1
+--local scalar num_missing:numeric = 0
+--local scalar my_success:numeric = 0
+local scalar my_failed:numeric = 0
+
+local series argcase :string by case
 
 $open_html_file mpathfile
-
 
 $openbase fbase
 $header fbase , mpathfile
 
+--$debug "getfameexpr---------------------------- " +famearg
+
 write quote+"Series"+quote+": [  " to OUTFILE
-
-
---tbc
-image date value annual "<FYEAR>-01-01"
-image date value monthly "<FYEAR>-<MZ>-01"
-image date value quarterly "<FYEAR>-<P>"
-image date value quarterly "<FYEAR>-<PTL>-01"
-image date value quarterly "<FYEAR>-<MZ>-01"
 
 try
 execute famearg
-
-if exists(curve2)
-	execute "local new getfame_ser = "+curve2
-	--desc (getfame_ser) = id(name(curve2))    --just name is best, if lsum is used what is description
-	desc (getfame_ser) = curve2    --just name is best, if lsum is used what is description
-
-else
-$writeerror_clean "Ups "+upper(curve2) +" Not Found", fbase, mpathfile
-$close_html_file
-$exitfame
-end if
-
-
-
 otherwise
-$writeerror_clean lasterror, fbase, mpathfile
+$saveerrors lasterror + " OBS argument"
+$listerrors
+$footer
+
 $close_html_file
 $exitfame
 end try
 
 
 
-if firstvalue(getfame_ser) NE NC 
-$getobs fbase, curve2, getfame_ser 
-else 
-$norange curve2,getfame_ser
+
+
+--$debug "getfameexpr floop " +reststr
+----  --nytt
+loop while not missing(location(reststr, ";")) and reststr NE ";"
+	
+set curwild =   trim(substring(reststr,1,location(reststr,";")-1))
+if  (curwild NE "" AND curwild NE "??")  --duplicate commas or memory fault
+
+        set argcase[myledd] =  curwild
+	
+        set myledd = myledd+1
+
+end if
+	set reststr=substring(reststr, location(reststr,";")+1, length(reststr))
+
+end loop
+
+--setter inn the last one
+if (length(reststr) GT 0 ) and (trim(reststr) NE ";")
+        set argcase[myledd] =  reststr
+	set reststr = "" 
 end if
 
-$footer
 
+--loop for i = 1 to lastvalue (argcase)
+-- $debug ""+string(i) + ":"+argcase [i]
+--end loop
+
+
+local scalar mbase :string =""
+--alle er åpne
+--loop for i=1 to lastvalue(basecase)
+--$debug "mbase wild :" + basecase[i] +string(i)
+--$debug ""+@open.db 
+
+--if i GT  1
+--set mbase = $getdbas(basecase[i]) + string(i) --if databases with identical names different places I add a number to make unique
+--else
+--set mbase = $getdbas(basecase[i]) --the first databse keeps original name
+--end if
+
+
+
+--maa lope for alle basene i global liste 1 ... eller open.db
+
+  set my_failed = 0
+loop for e = 1 to lastvalue(argcase)
+TRY
+  execute "local new getfame_ser = "+argcase[e]
+  desc (getfame_ser) = argcase[e]    --just name is best, if lsum is used what is description
+
+if e  GT 1 and my_failed EQ 0  
+  write "   ,   "  to OUTFILE --komma
+end if
+
+
+otherwise
+  set my_failed = 1
+  $saveerrors "Expression NOT Found:  " + argcase[e]
+end try
+
+
+
+
+try
+
+if firstvalue(getfame_ser) NE NC and my_failed EQ 0
+  $getobs fbase, argcase[e], getfame_ser 
+
+else if my_failed EQ 0 
+  $norange curve2,getfame_ser
+end if
+
+
+end try
+		
+
+end loop -- expressioncase
+
+
+
+$listerrors --if any
+$footer
 
 $close_html_file
 $exitfame
+--end if
+
+
 end proc
 -------------------------------------------getfame expression-------------------------------------
 
+--------------------------------------------------------------------------------------------------
 
 proc $footer
 try
-write " ],  "  to OUTFILE
 set stop_time =$gettime()
---new improved
 write  quote+"Elapsed_time_in_seconds"+quote+ ":" + string((stop_time-start_time)/1000)  to OUTFILE
 write "  } ]   "  to OUTFILE
 otherwise
@@ -395,9 +509,9 @@ end proc
 ------------------------------------------------
 
 
-------------------------------------------------
---used for logging of time used
-------------------------------------------------
+------------------------------------------------------------------
+--used for logging of time used, shown in bottom of final json
+-------------------------------------------------------------------
 function $gettime
 block
 over on
@@ -441,7 +555,7 @@ $defaults
 local scalar mpath:string = "$HOME/.GetFAME/"
 local scalar mfile:string = "getfameseries.json"
 local scalar mpathfile:string =  mpath+mfile
---not to be renames as script assume
+
 
 
 
@@ -450,14 +564,13 @@ $openbase fbase
 
 
 
---tbc
-image date value annual "<FYEAR>-01-01"
-image date value monthly "<FYEAR>-<MZ>-01"
-image date value quarterly "<FYEAR>-<P>"
-image date value quarterly "<FYEAR>-<PTL>-01"
-image date value quarterly "<FYEAR>-<MZ>-01"
+--tbc de med ----- har vert ute lenge
+--image date value annual "<FYEAR>-01-01"
+--image date value monthly "<FYEAR>-<MZ>-01"
+--image date value quarterly "<FYEAR>-<MZ>-01"
 
 try
+
 execute famearg
 
 otherwise
@@ -473,13 +586,11 @@ item type string off, namelist off, boolean off
 item type precision on, numeric on
 item alias on
 
---$debug "getmyfameseries "
 
-$createwildlist fbase, wild, mpathfile
---local scalar mylength:numeric = length (myliste) 
+
+$createwildlist fbase, wild, mpathfile 
 
 local scalar mylength:numeric = lastvalue (mycase) 
---$debug "getmyfameseries "+string(mylength)
 
 local scalar mycount:numeric = 0 
 local scalar mysname :string = "Ups"
@@ -503,7 +614,7 @@ write quote+"Missing"+quote+ ": "+quote+trim(missings)+quote +"," to OUTFILE
 
 write quote+"Series"+quote+": [  " to OUTFILE
 
---$debug "getmyfameseries looping "+string(mylength)
+
 
 set mysname =  "floopsname" 
 
@@ -518,22 +629,19 @@ $exitfame
 end if
 
 
-
 loop for s =1 to lastvalue(mycase)  
 	set mycount = mycount +1
 
 
 set mysname =   mycase[mycount]
 
---$debug "getmyfameseries looping "+mysname
 
 	
+try
 	execute "local new myseries = "+mysname	
+        
 	execute "desc (myseries) = desc(" +mysname +")" 
-
---$debug "getmyfameseries looping executes.."
-
-desc(myseries) = replace( desc(myseries), quote, "'")
+       desc(myseries) = replace( desc(myseries), quote, "'")
        
 
 if firstvalue(myseries) NE NC
@@ -547,16 +655,23 @@ end if
 		write " ," TO OUTFILE
 	end if
 	
+
+otherwise
+
+$saveerrors lasterror
+end  try
+
 end loop
 otherwise
-$writeerror_clean  "For "+mysname + "- "+ lasterror, fbase, mpathfile
-$close_html_file
-$exitfame
+$saveerrors lasterror +" err 2"
 
 end try 
+$listerrors --mpathfile
 $footer
-
+$log "getfameseries", fbase, wild, famearg
 $close_html_file
+
+
 $exitfame
 end proc
 
@@ -567,11 +682,18 @@ end proc
 proc $norange
 argument mysname, myser
 
-write "{" +quote+"Name"+quote+ ": "+quote+string(upper(  mysname))+quote +"," to OUTFILE
+
+
+
+write "{" +quote+"Name"+quote+ ": "+quote+string(upper( substring(mysname, location(mysname,"'" )+1 ,length(mysname) ) ))+quote +"," to OUTFILE
+write quote+"Db"+quote+ ": "+quote+string(upper( substring(mysname, 1, location(mysname,"'")-1)))+quote +"," to OUTFILE
+
 write quote+"Desc" +quote+": "+ quote+desc(myser) + quote + ","  to OUTFILE
+
 write quote+"Daterange" +quote+": "+ quote+(replace(@date,"NULL","*")) + quote +","  to OUTFILE
 write quote+"Frequency" +quote+": "+ quote+freq(myser) + quote + ","  to OUTFILE
 write quote+"Observations"+quote+":[ ]" +NEWLINE + "}" to Outfile
+
 
 
 end proc
@@ -658,26 +780,81 @@ end proc
 
 
 
+------------------------
+proc $saveerrors 
+argument myerror
+
+local scalar mylast:numeric
+
+if missing(lastvalue(getfame.err))
+	set getfame.err[1] = myerror
+	--$debug "saverrors missing" 
+else
+	set  mylast = lastvalue(getfame.err)  +1
+	--$debug "saverrors NOT missing"+string(mylast) 
+	set getfame.err[mylast] = myerror
+	--$debug " inni arr"+ getfame.err[mylast]  
+end if
+end proc
+
+-----------------------------------------------------------------------------------------
+
+-----------------------------------------------------------------------------------------------------
+proc $listerrors
+ 
+local scalar err1: string ="e1" 
+local scalar err2: string ="e2"
+local scalar myday:string = today ("<FYEAR>-<MZ>-<DZ>")
+
+width 30000
+
+
+
+write "],"  to OUTFILE
+if NOT missing(lastvalue(getfame.err)) --then list errors
+
+write quote+"ErrorCount"+quote +":"+ string(lastvalue(getfame.err)) + ","  to OUTFILE
+
+write quote+"Errors"+quote+": ["  to OUTFILE
+
+  loop for i=1 to lastvalue(getfame.err)
+
+	set err1  = replace(getfame.err[i], NEWLINE, " ")
+	set err2  = replace(err1, quote, "'")
+if i EQ lastvalue(getfame.err) --last
+	write "{"+quote+"Error"+quote+":"+quote+err2+quote + "}" to OUTFILE
+
+else -- comma needed
+	write "{"+quote+"Error"+quote+":"+quote+err2+quote + "}," to OUTFILE
+end if
+
+  end loop 
+
+write "],"  to OUTFILE
+
+else --no eroors
+  write quote+"ErrorCount"+quote +": 0 ,"  to OUTFILE
+  write quote+"Errors"+quote+": [],"  to OUTFILE
+
+end if
+end proc
+
+-----------------------------
 
 
 
 
 
--------------------debug  use ----------------------
+-------------------debug  not in use ----------------------
 procedure $debug
 argument myerror
-local scalar myday:string = today ("<FYEAR>-<MZ>-<DZ>")
-width 30000
-open <kind text; acc append>file ("$HOME/.GetFAME/fame.debug") as ERRORFILE
-write myday+ " : " +myerror  to ERRORFILE
-close !ERRORFILE
+
 end proc
--------------------------------------------------------------
+--------------------------------------------------------------------
 
 
 
-
----------------------------------------------
+---------------------------------- ---------------------------------------------
 proc $openbase
 argument fbase
 
@@ -688,25 +865,25 @@ series basecase :string by case
 local scalar myledd :numeric = 1
 
 
-loop while not missing(location(restbase, ",")) and restbase NE ","
+loop while not missing(location(restbase, ";")) and restbase NE ";"
 
-set curbase =   trim(substring(restbase,1,location(restbase,",")-1))
+set curbase =   trim(substring(restbase,1,location(restbase,";")-1))
 if  curbase NE ""  --duplicate commas
         set basecase[myledd] =  curbase
         set myledd = myledd+1
 end if
-        set restbase=trim(substring(restbase, location(restbase,",")+1, length(restbase)))
+        set restbase=trim(substring(restbase, location(restbase,";")+1, length(restbase)))
 
 end loop
 
-if (length(restbase) GT 0 ) and (trim(restbase) NE ",")
+if (length(restbase) GT 0 ) and (trim(restbase) NE ";")
         set basecase[myledd] =  trim(restbase )
 end if
 
 
 loop for i = 1 to lastvalue(basecase)
 
---$debug "openbase..  :" +basecase[i] + string(i)
+
 try
 if i GT 1
 execute "open <acc r> "+ quote+trim(basecase[i]) +quote + " as  "+$getdbas(basecase[i]) +string(i) 
@@ -726,9 +903,9 @@ end proc
 -----------------------------------------------------------
 
 
----------------------------
--- returning openas name
----------------------------
+--------------------------------------------------------------
+-- returning openas name --
+--------------------------------------------------------------
 function $getdbas
 argument mbase
 over on
@@ -768,10 +945,9 @@ scalar <over on>  stop_time  :precision =start_time --init to 0
 
 local scalar mynow :string = string(datefmt(created(start_time,secondly),"<YEAR>-<MZ>-<DZ>T<HHZ>:<MMZ>:<SSZ>"))
 
-
 try
 write "[{"+quote+"GetFAME_Json_Api" +quote+": "+ quote+"Erik.Soberg@ssb.no" + +quote+","  to OUTFILE
-write quote+"Version" +quote+": "+ quote+"Oslo-20251004" + quote+","  to OUTFILE
+write quote+"Version" +quote+": "+ quote+"Hack-20251019" + quote+","  to OUTFILE
 
 write quote+"Executed" +quote+": "+ quote+ + mynow +quote+","  to OUTFILE
 write quote+"Famever"+quote+": "+quote+ string(@release)+quote+","  to OUTFILE
@@ -779,7 +955,6 @@ write quote+"Database"+quote+": "+quote+ fbase+quote +"," to OUTFILE
 
 write quote+"Openas"+quote+": "+quote+ @open.db+quote +"," to OUTFILE
 
---write quote+"Result"+quote+": "+quote+ replace(ofile,"iso","")+quote +"," to OUTFILE
 write quote+"Result"+quote+": "+quote+ ofile+quote +"," to OUTFILE
 otherwise
 $writeerror_clean "  " + lasterror, fbase,"NC"
@@ -801,17 +976,25 @@ replace NC "null"
 replace NA "null"
 replace ND "null"
 
-
 local scalar < over on> mydate:date
-
-
 try
 
-write "{" +quote+"Name"+quote+ ": "+quote+string(upper( curve))+quote +"," to OUTFILE
+
+
+if NOT Missing (location(curve,"'"))
+write "{" +quote+"Name"+quote+ ": "+quote+string(upper( substring(curve, location(curve,"'" )+1 ,length(curve) ) ))+quote +"," to OUTFILE
+write quote+"Db"+quote+ ": "+quote+string(upper( substring(curve, 1, location(curve,"'")-1)))+quote +"," to OUTFILE
+
+else
+write "{" +quote+"Name"+quote+ ": "+quote+string(upper( desc(myserie)))+quote +"," to OUTFILE
+write quote+"Db"+quote+ ": "+quote+ @open.db +quote +"," to OUTFILE
+
+end if
+
 write quote+"Desc" +quote+": "+ quote+desc(myserie) + quote + ","  to OUTFILE
+
 write quote+"Daterange" +quote+": "+ quote+(replace(@date,"NULL","*")) + quote +","  to OUTFILE
 write quote+"Frequency" +quote+": "+ quote+freq(myserie) + quote + ","  to OUTFILE
-
 
 otherwise
 $writeerror_clean "  " + lasterror, fbase, "NC"
@@ -821,8 +1004,6 @@ write quote+"Observations"+quote+":[" to Outfile
 loop for mydate = firstvalue(myserie) to lastvalue(myserie)
 
 try
-
-
 write <crlf off> "{"+quote+"Date"+quote +":"+ quote+datefmt(mydate)+quote +", "+  quote+"Value"+quote +":" +string(numfmt(myserie[mydate],auto,@deci)) + &&
  ", "+ quote +"Epo"+quote+":[" +string($epoc(mydate)) +", " + string(numfmt(myserie[mydate],*, @deci)) +  "]}" to OUTFILE
 
@@ -831,7 +1012,6 @@ if (lastvalue(myserie) NE mydate)
 else
         write <crlf off> NEWLINE+"]  }    " to  OUTFILE  --last linene
 end if
-
 
 otherwise
 $writeerror_clean "  " + lasterror, fbase,"NC"
@@ -844,13 +1024,7 @@ end proc
 
 
 
-
--------------------------------------------------------------------
---logger med semi kolons that may occure in famearg
--------------------------------------------------------------------
 proc $log
-argument modul, fbase, wildcurve, famearg
---tbc
 end proc
 -------------------------------------------------------------------
 
@@ -900,6 +1074,7 @@ end function
 
 
 --Eof
+
 
 
 
