@@ -2,9 +2,9 @@
  "getfameerror":"Invalid number of arguments" ,
  "code":"400" ,
  "example": [{ 
- "example0":"use double quotes when having more database or wildcards separated with commas" , 
- "example1":"getfame -n /ssb/bruker/refertid/data/kpi_publ.db 'total?'" , 
- "example2":"getfame -n /ssb/bruker/refertid/data/fornavn.db '?ERIK?;ANN?'" , 
- "example4":"getfame -n $REFERTID/data/fornavn.db '?JAN?'" , 
+ "example0":"use double quotes when having more database or wildcards separated with semicolons" , 
+ "example1":"getfame -n '/ssb/bruker/refertid/data/kpi_publ.db' 'total?'" , 
+ "example2":"getfame -n '/ssb/bruker/refertid/data/fornavn.db' '?ERIK?; JOE?'" , 
+ "example4":"getfame -n '$REFERTID/data/fornavn.db' '?JAN?'" , 
  "example5":"getfame -n '/ssb/bruker/rsb/erik.db;edb2.db' 'STA?;K?;?TOTAL?'"  
  }]  }} 
