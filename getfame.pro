@@ -30,8 +30,18 @@
 --sep2025 getfame -e takes a number of expressions separated with ; semikolon "pct(total.ipr); mave(total.ipr,3)"
 --sep2025 getfame -s now ; semikolon as separator when listing a list of wildcards "sn1? ; ?.IPR; SN?ADJ.ARIMA?"
 --sep2025 sept 20 -
+--sep2025 sept 20 - descriptions for getfame -s removed problem python jupityer removed desc
+--sep2024 fix for description, name and db-name for expressions containing series from many expressions
+--sep2024 chars
 
 ---------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+----------------------------------------------------
 procedure $createwildlist
 argument fbase, wild, mpathfile
 
@@ -80,13 +90,13 @@ if (length(reststr) GT 0 ) and (trim(reststr) NE ";")
 end if
 
 
---$debug "inside wildlist mbase as .."
+
 
 local scalar mbase :string =""
 
 loop for i=1 to lastvalue(basecase)
 
---$debug "mbase wild :" + basecase[i] +string(i)
+
 
 if i GT  1
 set mbase = $getdbas(basecase[i]) + string(i) --if databases with identical names different places I add a number to make unique
@@ -128,15 +138,13 @@ end loop -- case
 end loop --base(r)
 
 
---$debug "wildlist loops done"
---set myliste = alpha(unique(NL(finnescase)))
---set mycase <case 1 to * > = MERGE(finnescase)
---/mycase  = MERGE(finnescase)
+
 -/mycase  = MERGE(sortdata(finnescase))
 
 
+
 OTHERWISE
---$debug "l_err:" + lasterror
+
 	$writeerror_clean "Ups! check for valid wildcard-list: "+wild, fbase,mpathfile+ lasterror
 	$close_html_file
 	$exitfame
@@ -165,7 +173,7 @@ close all
 $defaults
 
 
---$debug "getfamenames debug starts herei ------------------------------------------"+ now
+
 
 local scalar mpath:string ="$HOME/.GetFAME/"
 local scalar mfile:string ="getfamenames.json"
@@ -188,7 +196,6 @@ $open_html_file mpathfile
 
 $openbase fbase
 
---$debug "did open " + @open.db + "  s "+@search
 
 
 
@@ -263,6 +270,7 @@ execute "set myupdated =  datefmt(updated("+sn+",secondly), "+quote+"<YEAR>-<MZ>
 execute "set mydescr =  descr(" +sn +")"
 --set mydescr = "" 
 --sat
+	    --+ quote+"Desc"+quote+":"+quote+replace(mydescr,quote,"'")+quote +"," &&
 
 
 
@@ -273,7 +281,7 @@ execute "set mydescr =  descr(" +sn +")"
 	    + quote+"Class"+quote+":"+quote+myclass+quote +","   &&
 	    + quote+"Observed"+quote+":"+quote+myobs+quote+","        &&
 	    + quote+"Freq"+quote+":"+quote+myfreq+quote+","        &&
-	    + quote+"Desc"+quote+":"+quote+replace(mydescr,quote,"'")+quote +"," &&
+	    + quote+"Desc"+quote+":"+quote+replace($replace_chars(mydescr),quote,"'")+quote +"," &&
 	    + quote+"Created"+quote+":"+ quote+mycreated+quote+","+     &&
 	    + quote+"Updated"+quote+ ":"+ quote+myupdated +quote  +"}" to Outfile
 
@@ -322,10 +330,11 @@ proc $defaults
 close all
 width 30000
 store work; over on
-channel warning none;
+channel warning none
 ignore on;over on
 series getfame.err :string by case
 
+scalar getfame_replace:numeric =  location(upper( getenv("GETFAMESYS")),"MYFAME")
 
 
 image date Quarterly index "<FYEAR>:<PZ>"
@@ -384,7 +393,7 @@ $open_html_file mpathfile
 $openbase fbase
 $header fbase , mpathfile
 
---$debug "getfameexpr---------------------------- " +famearg
+
 
 write quote+"Series"+quote+": [  " to OUTFILE
 
@@ -401,9 +410,6 @@ end try
 
 
 
-
-
---$debug "getfameexpr floop " +reststr
 ----  --nytt
 loop while not missing(location(reststr, ";")) and reststr NE ";"
 	
@@ -426,40 +432,30 @@ if (length(reststr) GT 0 ) and (trim(reststr) NE ";")
 end if
 
 
---loop for i = 1 to lastvalue (argcase)
--- $debug ""+string(i) + ":"+argcase [i]
---end loop
+
 
 
 local scalar mbase :string =""
---alle er åpne
---loop for i=1 to lastvalue(basecase)
---$debug "mbase wild :" + basecase[i] +string(i)
---$debug ""+@open.db 
-
---if i GT  1
---set mbase = $getdbas(basecase[i]) + string(i) --if databases with identical names different places I add a number to make unique
---else
---set mbase = $getdbas(basecase[i]) --the first databse keeps original name
---end if
 
 
-
---maa lope for alle basene i global liste 1 ... eller open.db
 
   set my_failed = 0
 loop for e = 1 to lastvalue(argcase)
 TRY
+
   execute "local new getfame_ser = "+argcase[e]
   desc (getfame_ser) = argcase[e]    --just name is best, if lsum is used what is description
 
 if e  GT 1 and my_failed EQ 0  
+
   write "   ,   "  to OUTFILE --komma
 end if
 
 
 otherwise
+
   set my_failed = 1
+
   $saveerrors "Expression NOT Found:  " + argcase[e]
 end try
 
@@ -469,12 +465,15 @@ end try
 try
 
 if firstvalue(getfame_ser) NE NC and my_failed EQ 0
+$namedesc_e fbase, argcase[e], getfame_ser
   $getobs fbase, argcase[e], getfame_ser 
 
 else if my_failed EQ 0 
+
+$namedesc_e fbase, argcase[e] , getfame_ser
+
   $norange curve2,getfame_ser
 end if
-
 
 end try
 		
@@ -498,7 +497,9 @@ end proc
 
 proc $footer
 try
+--write " ],  "  to OUTFILE fllytter hack
 set stop_time =$gettime()
+--new improved
 write  quote+"Elapsed_time_in_seconds"+quote+ ":" + string((stop_time-start_time)/1000)  to OUTFILE
 write "  } ]   "  to OUTFILE
 otherwise
@@ -509,9 +510,9 @@ end proc
 ------------------------------------------------
 
 
-------------------------------------------------------------------
---used for logging of time used, shown in bottom of final json
--------------------------------------------------------------------
+------------------------------------------------
+--used for logging of time used
+------------------------------------------------
 function $gettime
 block
 over on
@@ -555,7 +556,7 @@ $defaults
 local scalar mpath:string = "$HOME/.GetFAME/"
 local scalar mfile:string = "getfameseries.json"
 local scalar mpathfile:string =  mpath+mfile
-
+--not to be renames as script assume
 
 
 
@@ -564,10 +565,6 @@ $openbase fbase
 
 
 
---tbc de med ----- har vert ute lenge
---image date value annual "<FYEAR>-01-01"
---image date value monthly "<FYEAR>-<MZ>-01"
---image date value quarterly "<FYEAR>-<MZ>-01"
 
 try
 
@@ -588,9 +585,11 @@ item alias on
 
 
 
-$createwildlist fbase, wild, mpathfile 
+$createwildlist fbase, wild, mpathfile
+--local scalar mylength:numeric = length (myliste) 
 
 local scalar mylength:numeric = lastvalue (mycase) 
+
 
 local scalar mycount:numeric = 0 
 local scalar mysname :string = "Ups"
@@ -629,6 +628,7 @@ $exitfame
 end if
 
 
+
 loop for s =1 to lastvalue(mycase)  
 	set mycount = mycount +1
 
@@ -636,19 +636,22 @@ loop for s =1 to lastvalue(mycase)
 set mysname =   mycase[mycount]
 
 
+
 	
 try
 	execute "local new myseries = "+mysname	
-        
+
 	execute "desc (myseries) = desc(" +mysname +")" 
        desc(myseries) = replace( desc(myseries), quote, "'")
        
 
 if firstvalue(myseries) NE NC
+	$namedesc_s fbase, mysname, myseries
 	$getobs fbase, mysname,  myseries
 else
 
-$norange mysname, myseries
+	$namedesc_s fbase, mysname, myseries
+	$norange mysname, myseries
 
 end if
 	if mycount NE mylength
@@ -663,14 +666,17 @@ end  try
 
 end loop
 otherwise
+
 $saveerrors lasterror +" err 2"
 
+
+
 end try 
+
 $listerrors --mpathfile
 $footer
-$log "getfameseries", fbase, wild, famearg
-$close_html_file
 
+$close_html_file
 
 $exitfame
 end proc
@@ -678,26 +684,22 @@ end proc
 -----------------------end -----get fame series -----------------------------
 
 
---writes empty range instead of err message
 proc $norange
 argument mysname, myser
 
-
-
-
-write "{" +quote+"Name"+quote+ ": "+quote+string(upper( substring(mysname, location(mysname,"'" )+1 ,length(mysname) ) ))+quote +"," to OUTFILE
-write quote+"Db"+quote+ ": "+quote+string(upper( substring(mysname, 1, location(mysname,"'")-1)))+quote +"," to OUTFILE
-
-write quote+"Desc" +quote+": "+ quote+desc(myser) + quote + ","  to OUTFILE
-
-write quote+"Daterange" +quote+": "+ quote+(replace(@date,"NULL","*")) + quote +","  to OUTFILE
-write quote+"Frequency" +quote+": "+ quote+freq(myser) + quote + ","  to OUTFILE
+--write "{" +quote+"Name"+quote+ ": "+quote+string(upper( substring(mysname, location(mysname,"'" )+1 ,length(mysname) ) ))+quote +"," to OUTFILE
+--write quote+"Db"+quote+ ": "+quote+string(upper( substring(mysname, 1, location(mysname,"'")-1)))+quote +"," to OUTFILE
+--hackett deler opp
+--write "{" +quote+"Name"+quote+ ": "+quote+string(upper(  mysname))+quote +"," to OUTFILE
+--write quote+"Desc" +quote+": "+ quote+desc(myser) + quote + ","  to OUTFILE
+--write quote+"Desc" +quote+": "+ quote+"" + quote + ","  to OUTFILE
+--sat
+write quote+"Date" +quote+": "+ quote+(replace(@date,"NULL","*")) + quote +","  to OUTFILE
+--write quote+"Freq" +quote+": "+ quote+freq(myser) + quote + ","  to OUTFILE
 write quote+"Observations"+quote+":[ ]" +NEWLINE + "}" to Outfile
 
-
-
 end proc
-----------------
+-----------------------------------------------------------------------------------------------
 
 
 
@@ -788,12 +790,12 @@ local scalar mylast:numeric
 
 if missing(lastvalue(getfame.err))
 	set getfame.err[1] = myerror
-	--$debug "saverrors missing" 
+
 else
 	set  mylast = lastvalue(getfame.err)  +1
-	--$debug "saverrors NOT missing"+string(mylast) 
+	
 	set getfame.err[mylast] = myerror
-	--$debug " inni arr"+ getfame.err[mylast]  
+	
 end if
 end proc
 
@@ -845,9 +847,8 @@ end proc
 
 
 
--------------------debug  not in use ----------------------
+-------------------debug  use ----------------------
 procedure $debug
-argument myerror
 
 end proc
 --------------------------------------------------------------------
@@ -955,6 +956,7 @@ write quote+"Database"+quote+": "+quote+ fbase+quote +"," to OUTFILE
 
 write quote+"Openas"+quote+": "+quote+ @open.db+quote +"," to OUTFILE
 
+--write quote+"Result"+quote+": "+quote+ replace(ofile,"iso","")+quote +"," to OUTFILE
 write quote+"Result"+quote+": "+quote+ ofile+quote +"," to OUTFILE
 otherwise
 $writeerror_clean "  " + lasterror, fbase,"NC"
@@ -964,7 +966,58 @@ end proc
 
 
 
+-------------------------------------------
+--used for EXPRESSUINNS 
+proc $namedesc_e
+argument fbase,curve,  myserie
+-------------------------------------------
 
+block
+ignore on
+replace NC ""
+replace NA ""
+local scalar curve_tmp :string = ""
+local scalar curve_tmp2 :string = ""
+local scalar curve_tmp3 :string = ""
+
+--try
+set curve_tmp = replace(curve, "(", " ")   
+set curve_tmp2 = replace(curve_tmp, ")", "")   
+set curve_tmp3 = replace(curve_tmp2, ",", " ")   
+
+write "{" +quote+"Name"+quote+ ": "+quote+replace(curve_tmp3,"'"," ") +quote +"," to OUTFILE
+
+--one expression may be from different databases
+write quote+"Db"+quote+ ": "+quote+ @open.db +quote +"," to OUTFILE
+write quote+"Desc" +quote+": "+ quote+replace(curve_tmp3,"'", " ") + quote + ","  to OUTFILE
+
+--end try
+end block
+end proc
+
+
+------------------------------------------------------------------------
+--used for getfame -SERIES only 
+proc $namedesc_s
+argument fbase,curve,  myserie
+
+block
+ignore on
+
+--the split for jimmy
+write "{" +quote+"Name"+quote+ ": "+quote+string(upper( substring(curve, location(curve,"'" )+1 ,length(curve) ) ))+quote +"," to OUTFILE
+write quote+"Db"+quote+ ": "+quote+string(upper( substring(curve, 1, location(curve,"'" )-1  ) ))+quote +"," to OUTFILE
+
+--norway cahar jupiter tbc
+--write quote+"Desc" +quote+": "+ quote+replace(desc(myserie),"'"," ") + quote + ","  to OUTFILE
+
+write quote+"Desc" +quote+": "+ quote+ $replace_chars(desc(myserie)) + quote + ","  to OUTFILE
+--testing specials
+--write quote+"Desc" +quote+": "+ quote+"" + quote + ","  to OUTFILE
+
+end block
+end proc
+--SERIES END header obs-----------------------------------------------------------
 
 
 -------------------------------------------------------
@@ -976,25 +1029,15 @@ replace NC "null"
 replace NA "null"
 replace ND "null"
 
+
+
 local scalar < over on> mydate:date
 try
 
 
 
-if NOT Missing (location(curve,"'"))
-write "{" +quote+"Name"+quote+ ": "+quote+string(upper( substring(curve, location(curve,"'" )+1 ,length(curve) ) ))+quote +"," to OUTFILE
-write quote+"Db"+quote+ ": "+quote+string(upper( substring(curve, 1, location(curve,"'")-1)))+quote +"," to OUTFILE
-
-else
-write "{" +quote+"Name"+quote+ ": "+quote+string(upper( desc(myserie)))+quote +"," to OUTFILE
-write quote+"Db"+quote+ ": "+quote+ @open.db +quote +"," to OUTFILE
-
-end if
-
-write quote+"Desc" +quote+": "+ quote+desc(myserie) + quote + ","  to OUTFILE
-
-write quote+"Daterange" +quote+": "+ quote+(replace(@date,"NULL","*")) + quote +","  to OUTFILE
-write quote+"Frequency" +quote+": "+ quote+freq(myserie) + quote + ","  to OUTFILE
+write quote+"Date" +quote+": "+ quote+(replace(@date,"NULL","*")) + quote +","  to OUTFILE
+write quote+"Freq" +quote+": "+ quote+freq(myserie) + quote + ","  to OUTFILE
 
 otherwise
 $writeerror_clean "  " + lasterror, fbase, "NC"
@@ -1073,7 +1116,50 @@ end function
 
 
 
+------------------------------------------------------------
+function $replace_chars
+argument  mystring
+
+if  not (missing(getfame_replace))
+
+--myfame path
+local scalar tmp_str1 :string = ""
+local scalar tmp_str2 :string = ""
+local scalar tmp_str3 :string = ""
+local scalar tmp_str4 :string = ""
+local scalar tmp_str5 :string = ""
+local scalar tmp_str6 :string = ""
+
+--set tmp_str = replace(replace(mystring,"ø","o"), "Ø","O")
+
+--ok oe  æÆ
+set tmp_str1 = replace(mystring,"æ","o")
+set tmp_str2 = replace(tmp_str1,"Æ","O")
+
+--åÅ oj  åÅ
+Set tmp_str3 = replace(tmp_str2,"å","a")
+set tmp_str4 = replace(tmp_str3,"Å","A")
+
+--vrøøøl  øØ som i beer
+Set tmp_str5 = replace(tmp_str4,"ø","o")
+set tmp_str6 = replace(tmp_str5,"Ø","O")
+
+return (tmp_str6)
+else
+return mystring
+end if
+
+end function
+
+
+-----------------------------------------------------------
+
+
+
+
+
 --Eof
+
 
 
 
