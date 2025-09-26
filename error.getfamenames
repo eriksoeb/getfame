@@ -6,5 +6,5 @@
  "example1":"getfame -n /ssb/bruker/refertid/data/kpi_publ.db 'total?'" , 
  "example2":"getfame -n /ssb/bruker/refertid/data/fornavn.db '?ERIK?;ANN?'" , 
  "example4":"getfame -n $REFERTID/data/fornavn.db '?JAN?'" , 
- "example5":"getfame -n '/ssb/bruker/rsb/erik.db,edb2.db' 'STA?;K?;?TOTAL?'"  
+ "example5":"getfame -n '/ssb/bruker/rsb/erik.db;edb2.db' 'STA?;K?;?TOTAL?'"  
  }]  }} 
