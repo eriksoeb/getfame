@@ -1,16 +1,17 @@
+
 { "error":{ 
- "getfameerror":"Invalid number of arguments." ,
+ "getfameerror":"Invalid number of arguments" ,
  "code":"400" ,
  "example": [{ 
- "example0":"use double quotes when having more databases separated with commas, or fame argument by semicolon, or fameexpression with special char " , 
+ "example0":"use double quotes when having more databases separated with semicolon, or fame argument by semicolon, or fameexpression with special char " , 
  "example1":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'total.ipr'" , 
- "example2":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'pct(total.ipr)' 'freq m; date jan2018 to *'" , 
- "example3":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'convert(total.ipr,annual, constant)'" , 
- "example4":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'convert(K01.ipr,quarterly, constant)'" , 
- "example5":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'LAVE(K01.IPR,K02.IPR,K03.IPR)'" , 
- "example6":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'LAVE(K01.IPR,K02.IPR,K03.IPR)' 'freq m; date feb90 to aug90'" , 
- "example7":"getfame -e '$HOME/erik.db, another.db' 'mave(pct(Myseries))'"  
+ "example2":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'total.ipr; pct(total.ipr)'" , 
+ "example3":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'pct(total.ipr)' 'freq m; date jan2018 to *'" , 
+ "example4":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'convert(total.ipr,annual, constant)'" , 
+ "example5":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'convert(K01.ipr,quarterly, constant)'" , 
+ "example6":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'LAVE(K01.IPR,K02.IPR,K03.IPR)'" , 
+ "example7":"getfame -e /ssb/bruker/refertid/data/kpi_publ.db 'LAVE(K01.IPR,K02.IPR,K03.IPR)' 'freq m; date feb90 to aug90'" , 
+ "example8":"getfame -e '$HOME/erik.db, edb2.db' 'mave(pct(STATS)); pct(erik'myseries)'"  
  }]  }} 
-
 
 
