@@ -1,15 +1,16 @@
 
+
 1. getfame -n :  wildcard search serienames
 
 
 xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s REFERTID/data/fornavn.db  "ERIK"
-xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s $REFERTID/data/fornavn.db  "?ERIK?,JIM,JAN?"
-xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s $REFERTID/data/fornavn.db  "?RIK,KRISTIN,JIM?"
+xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s $REFERTID/data/fornavn.db  "?ERIK?;JIM;JAN?"
+xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s $REFERTID/data/fornavn.db  "?RIK;KRIS|TIN;JIM?"
 jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfame -n $REFERTID/data/fornavn.db "?ERIK" '
 
 [{"GetFameJsonApi": "ErikS",
 "ApiVersion": "20240721",
-"Executed": "24-Jul-25 19:09:49",
+"Executed": "24-Jul-24 19:09:49",
 "Famever": "11.53",
 "Database": "/ssb/bruker/refertid/data/fornavn.db",
 "Wildcard": "?ERIK?",
@@ -27,17 +28,17 @@ jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfame -n $REF
 
 2. getfame -e :  (gets one series-expression as a result, based on a fame expression. recommended. last argument not required. Full flexibility for converting
 
-sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e $REFERTID/data/fornavn.db  "ERIK"
-sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e $REFERTID/data/fornavn.db  "mave(ERIK,2)" "date 2000 to 2010; deci 1"
+sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e "$REFERTID/data/fornavn.db"  "ERIK"
+sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e "$REFERTID/data/fornavn.db"  "mave(ERIK,2);MAVE(ERIK,3)" "date 2000 to 2010; deci 1"
 jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfame -e $REFERTID/data/fornavn.db "pct(ERIK)" "date 2000 to *" '
-sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e $REFERTID/data/fornavn.db  "Lsum(ERIK,EIRIK)" "date 2000 to *"
-sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e $REFERTID/data/kpi_publ.db "convert(total.ipr,annual,constant)" "date 2020 to *"
-sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e $REFERTID/data/kpi_publ.db "total.ipr" "freq m; date jan20 to feb20;deci 2"
-sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e $REFERTID/data/fornavn.db  "ERIK" "date 2000 to 2010"
+sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e "$REFERTID/data/fornavn.db"  "Lsum(ERIK,EIRIK)" "date 2000 to *"
+sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e "$REFERTID/data/kpi_publ.db" "convert(total.ipr,annual,constant)" "date 2020 to *"
+sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e "$REFERTID/data/kpi_publ.db" "total.ipr" "freq m; date jan20 to feb20;deci 2"
+sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e "$REFERTID/data/fornavn.db;mydb.db"  "ERIK ; MSUM(ERIK); PCT(ERIK)" "date 2000 to 2010"
 
 [{"GetFameJsonApi": "ErikS",
 "ApiVersion": "20240721",
-"Executed": "24-Jul-25 19:12:00",
+"Executed": "24-Jul-24 19:12:00",
 "Famever": "11.53",
 "Database": "/ssb/bruker/refertid/data/fornavn.db",
 "Series": [  
@@ -59,16 +60,16 @@ sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e $REFERTID/data/fornavn.db  "
 3. getfame -s  ( 1 or more series ,list of wildcards, but no functions )  last argument not required. Convert will use observed from fame
 
 xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s "/ssb/bruker/refertid/data/kpi_publ.db;mydb.db" "total.ipr" 
-xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s "/ssb/bruker/refertid/data/kpi_publ.db;mydb" "total.ipr" "date 2024;deci 1"
+xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s "/ssb/bruker/refertid/data/kpi_publ.db;mydb.db" "total.ipr" "date 2024;deci 1"
 xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "freq m; date thisday(m)-5 to *""
-xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s  $REFERTID/data/fornavn.db  "?ERIK,KRISTIN,JIM.HE?" "date 2010 to 2012"
+xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s  $REFERTID/data/fornavn.db  "?ERIK;KRISTIN;JIM?" "date 2010 to 2012"
 xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s /ssb/bruker/refertid/data/fornavn.db "?JAN?" "date 2000 to 2005"
 xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s /ssb/bruker/refertid/data/fornavn.db "JI?" "date 2000 to *"
-jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfame -s $REFERTID/data/fornavn.db "ERIK?" "date 2000 to *" '
+jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/api/getfame -s $REFERTID/data/fornavn.db "ERIK?" "date 2000 to *" '
 
 [{"GetFameJsonApi": "ErikS",
 "ApiVersion": "20240721",
-"Executed": "24-Jul-25 19:27:46",
+"Executed": "24-Jul-24 19:27:46",
 "Famever": "11.53",
 "Database": "/ssb/bruker/refertid/data/fornavn.db",
 "Series": [  
@@ -104,4 +105,3 @@ jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfame -s $REF
 ]  }     ] } ]   
 
  
-
