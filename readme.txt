@@ -4,7 +4,7 @@
 
 xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s REFERTID/data/fornavn.db  "ERIK"
 xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s $REFERTID/data/fornavn.db  "?ERIK?,JIM,JAN?"
-xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s $REFERTID/data/fornavn.db  "?RIK,KRIS|TIN,JIM.HE?"
+xterm :     sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s $REFERTID/data/fornavn.db  "?RIK,KRISTIN,JIM?"
 jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfame -n $REFERTID/data/fornavn.db "?ERIK" '
 
 [{"GetFameJsonApi": "ErikS",
@@ -58,8 +58,8 @@ sl-fame-1:~> $REFERTID/system/myfame/api/getfame -e $REFERTID/data/fornavn.db  "
 
 3. getfame -s  ( 1 or more series ,list of wildcards, but no functions )  last argument not required. Convert will use observed from fame
 
-xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" 
-xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "date 2024;deci 1"
+xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s "/ssb/bruker/refertid/data/kpi_publ.db;mydb.db" "total.ipr" 
+xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s "/ssb/bruker/refertid/data/kpi_publ.db;mydb" "total.ipr" "date 2024;deci 1"
 xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s /ssb/bruker/refertid/data/kpi_publ.db "total.ipr" "freq m; date thisday(m)-5 to *""
 xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s  $REFERTID/data/fornavn.db  "?ERIK,KRISTIN,JIM.HE?" "date 2010 to 2012"
 xterm: sl-fame-1:~> $REFERTID/system/myfame/api/getfame -s /ssb/bruker/refertid/data/fornavn.db "?JAN?" "date 2000 to 2005"
@@ -68,7 +68,7 @@ jupiterlab :  !ssh sl-fame-1.ssb.no '$REFERTID/system/myfame/API/getfame -s $REF
 
 [{"GetFameJsonApi": "ErikS",
 "ApiVersion": "20240721",
-"Executed": "24-Jul-24 19:27:46",
+"Executed": "24-Jul-25 19:27:46",
 "Famever": "11.53",
 "Database": "/ssb/bruker/refertid/data/fornavn.db",
 "Series": [  
